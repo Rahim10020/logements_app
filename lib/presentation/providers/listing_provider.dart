@@ -14,6 +14,12 @@ final listingsProvider = StreamProvider<List<ListingModel>>((ref) {
   return repo.getListings();
 });
 
+/// Provider de toutes les annonces (alias pour compatibilité)
+final allListingsProvider = StreamProvider<List<ListingModel>>((ref) {
+  final repo = ref.watch(listingRepositoryProvider);
+  return repo.getListings();
+});
+
 /// Provider d'une annonce spécifique
 final listingByIdProvider =
     StreamProvider.family<ListingModel?, String>((ref, id) {

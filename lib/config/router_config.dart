@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logements_app/presentation/pages/auth/login_page.dart';
@@ -7,6 +6,11 @@ import 'package:logements_app/presentation/pages/auth/role_selection_page.dart';
 import 'package:logements_app/presentation/pages/home/home_page.dart';
 import 'package:logements_app/presentation/pages/favorites/favorites_page.dart';
 import 'package:logements_app/presentation/pages/profile/profile_page.dart';
+import 'package:logements_app/presentation/pages/profile/edit_profile_page.dart';
+import 'package:logements_app/presentation/pages/search/search_page.dart';
+import 'package:logements_app/presentation/pages/dashboard/dashboard_page.dart';
+import 'package:logements_app/presentation/pages/listing/listing_detail_page.dart';
+import 'package:logements_app/presentation/pages/listing/add_listing_page.dart';
 import 'package:logements_app/presentation/pages/main_page.dart';
 import 'package:logements_app/presentation/providers/auth_provider.dart';
 
@@ -71,9 +75,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/search',
-                builder: (context, state) => const Scaffold(
-                  body: Center(child: Text('Search Page - À implémenter')),
-                ),
+                builder: (context, state) => const SearchPage(),
               ),
             ],
           ),
@@ -93,9 +95,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/dashboard',
-                builder: (context, state) => const Scaffold(
-                  body: Center(child: Text('Dashboard Page - À implémenter')),
-                ),
+                builder: (context, state) => const DashboardPage(),
               ),
             ],
           ),
@@ -117,10 +117,30 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/listing/:id',
         builder: (context, state) {
           final id = state.pathParameters['id']!;
-          return Scaffold(
-            body: Center(child: Text('Listing Detail Page - ID: $id')),
-          );
+          return ListingDetailPage(listingId: id);
         },
+      ),
+
+      // Add listing
+      GoRoute(
+        path: '/add-listing',
+        builder: (context, state) => const AddListingPage(),
+      ),
+
+      // Edit listing
+      GoRoute(
+        path: '/edit-listing/:id',
+        builder: (context, state) {
+          // TODO: Créer EditListingPage (similaire à AddListingPage mais avec pré-remplissage)
+          // final id = state.pathParameters['id']!;
+          return const AddListingPage();
+        },
+      ),
+
+      // Edit profile
+      GoRoute(
+        path: '/edit-profile',
+        builder: (context, state) => const EditProfilePage(),
       ),
     ],
   );
