@@ -81,11 +81,49 @@ class DashboardPage extends ConsumerWidget {
                     'Mes annonces',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
-                  TextButton(
-                    onPressed: () {
-                      // TODO: Filtrer/Trier
+                  PopupMenuButton<String>(
+                    onSelected: (value) {
+                      // Implémenter le tri/filtrage
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Tri par: $value')),
+                      );
                     },
-                    child: const Text('Tout voir'),
+                    itemBuilder: (context) => [
+                      const PopupMenuItem(
+                        value: 'recent',
+                        child: Text('Plus récentes'),
+                      ),
+                      const PopupMenuItem(
+                        value: 'views',
+                        child: Text('Plus vues'),
+                      ),
+                      const PopupMenuItem(
+                        value: 'favorites',
+                        child: Text('Plus favoris'),
+                      ),
+                      const PopupMenuItem(
+                        value: 'price_high',
+                        child: Text('Prix décroissant'),
+                      ),
+                      const PopupMenuItem(
+                        value: 'price_low',
+                        child: Text('Prix croissant'),
+                      ),
+                      const PopupMenuItem(
+                        value: 'status',
+                        child: Text('Par statut'),
+                      ),
+                    ],
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      child: Row(
+                        children: [
+                          Text('Trier'),
+                          SizedBox(width: 4),
+                          Icon(Icons.filter_list, size: 20),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),

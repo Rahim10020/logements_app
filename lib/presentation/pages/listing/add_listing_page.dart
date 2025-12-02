@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
@@ -628,25 +629,72 @@ class _Step2LocationState extends ConsumerState<_Step2Location> {
                     label: const Text('Utiliser ma position'),
                     onPressed: () async {
                       try {
-                        // Note: Requires geolocator package
-                        // For now, show a message that this feature needs setup
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Fonctionnalité GPS nécessite le package geolocator. '
-                              'Veuillez entrer les coordonnées manuellement.',
-                            ),
-                          ),
+                        // Vérifier les permissions
+                        bool serviceEnabled =
+                            await Geolocator.isLocationServiceEnabled();
+                        if (!serviceEnabled) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Veuillez activer les services de localisation'),
+                              ),
+                            );
+                          }
+                          return;
+                        }
+
+                        LocationPermission permission =
+                            await Geolocator.checkPermission();
+                        if (permission == LocationPermission.denied) {
+                          permission = await Geolocator.requestPermission();
+                          if (permission == LocationPermission.denied) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Permission de localisation refusée'),
+                                ),
+                              );
+                            }
+                            return;
+                          }
+                        }
+
+                        if (permission == LocationPermission.deniedForever) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'Permission de localisation refusée définitivement'),
+                              ),
+                            );
+                          }
+                          return;
+                        }
+
+                        // Obtenir la position
+                        final position = await Geolocator.getCurrentPosition(
+                          desiredAccuracy: LocationAccuracy.high,
                         );
-                        // TODO: Uncomment after adding geolocator package
-                        // final position = await Geolocator.getCurrentPosition();
-                        // ref.read(listingFormProvider.notifier).update((state) {
-                        //   return {
-                        //     ...state,
-                        //     'latitude': position.latitude,
-                        //     'longitude': position.longitude,
-                        //   };
-                        // });
+
+                        ref.read(listingFormProvider.notifier).update((state) {
+                          return {
+                            ...state,
+                            'latitude': position.latitude,
+                            'longitude': position.longitude,
+                          };
+                        });
+
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Position obtenue: ${position.latitude.toStringAsFixed(4)}, ${position.longitude.toStringAsFixed(4)}',
+                              ),
+                            ),
+                          );
+                        }
                       } catch (e) {
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
