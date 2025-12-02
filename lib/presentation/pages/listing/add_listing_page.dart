@@ -675,7 +675,9 @@ class _Step2LocationState extends ConsumerState<_Step2Location> {
 
                         // Obtenir la position
                         final position = await Geolocator.getCurrentPosition(
-                          desiredAccuracy: LocationAccuracy.high,
+                          locationSettings: const LocationSettings(
+                            accuracy: LocationAccuracy.high,
+                          ),
                         );
 
                         ref.read(listingFormProvider.notifier).update((state) {
@@ -772,11 +774,12 @@ class _Step3Details extends ConsumerWidget {
               labelText: 'Nombre de chambres *',
               prefixIcon: Icon(Icons.bed),
             ),
-            items: List.generate(10, (i) => i).map((n) {
+            items: List.generate(10, (i) => i).map((value) {
               return DropdownMenuItem(
-                value: n,
-                child:
-                    Text(n == 0 ? 'Studio' : '$n chambre${n > 1 ? 's' : ''}'),
+                value: value,
+                child: Text(value == 0
+                    ? 'Studio'
+                    : '$value chambre${value > 1 ? 's' : ''}'),
               );
             }).toList(),
             validator: (value) {
@@ -800,10 +803,10 @@ class _Step3Details extends ConsumerWidget {
               labelText: 'Nombre de salles de bain *',
               prefixIcon: Icon(Icons.bathroom),
             ),
-            items: List.generate(6, (i) => i + 1).map((n) {
+            items: List.generate(6, (i) => i + 1).map((value) {
               return DropdownMenuItem(
-                value: n,
-                child: Text('$n salle${n > 1 ? 's' : ''} de bain'),
+                value: value,
+                child: Text('$value salle${value > 1 ? 's' : ''} de bain'),
               );
             }).toList(),
             validator: (value) {

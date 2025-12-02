@@ -395,12 +395,12 @@ class _EditListingPageState extends ConsumerState<EditListingPage> {
               decoration: const InputDecoration(
                 labelText: 'Nombre de chambres',
               ),
-              items: List.generate(6, (i) => i).map((num) {
+              items: List.generate(6, (i) => i).map((value) {
                 return DropdownMenuItem(
-                  value: num,
-                  child: Text(num == 0
+                  value: value,
+                  child: Text(value == 0
                       ? 'Studio'
-                      : '$num chambre${num > 1 ? 's' : ''}'),
+                      : '$value chambre${value > 1 ? 's' : ''}'),
                 );
               }).toList(),
               onChanged: (value) => setState(() => _selectedBedrooms = value),
@@ -418,10 +418,10 @@ class _EditListingPageState extends ConsumerState<EditListingPage> {
               decoration: const InputDecoration(
                 labelText: 'Nombre de salles de bain',
               ),
-              items: List.generate(5, (i) => i + 1).map((num) {
+              items: List.generate(5, (i) => i + 1).map((value) {
                 return DropdownMenuItem(
-                  value: num,
-                  child: Text('$num salle${num > 1 ? 's' : ''} de bain'),
+                  value: value,
+                  child: Text('$value salle${value > 1 ? 's' : ''} de bain'),
                 );
               }).toList(),
               onChanged: (value) => setState(() => _selectedBathrooms = value),
