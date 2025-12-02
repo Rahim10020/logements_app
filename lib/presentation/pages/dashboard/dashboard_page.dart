@@ -90,7 +90,7 @@ class DashboardPage extends ConsumerWidget {
             if (listings.isEmpty)
               _buildEmptyState(context)
             else
-              _buildListingsSection(context, listings),
+              _buildListingsSection(context, ref, listings),
 
             const SizedBox(height: 80),
           ],
@@ -310,7 +310,7 @@ class DashboardPage extends ConsumerWidget {
   }
 
   Widget _buildListingsSection(
-      BuildContext context, List<ListingModel> listings) {
+      BuildContext context, WidgetRef ref, List<ListingModel> listings) {
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -318,12 +318,13 @@ class DashboardPage extends ConsumerWidget {
       itemCount: listings.length,
       itemBuilder: (context, index) {
         final listing = listings[index];
-        return _buildListingItem(context, listing);
+        return _buildListingItem(context, ref, listing);
       },
     );
   }
 
-  Widget _buildListingItem(BuildContext context, ListingModel listing) {
+  Widget _buildListingItem(
+      BuildContext context, WidgetRef ref, ListingModel listing) {
     final currencyFormat = NumberFormat.currency(
       locale: 'fr_FR',
       symbol: 'FCFA',
@@ -479,7 +480,7 @@ class DashboardPage extends ConsumerWidget {
                   ),
                 ],
                 onSelected: (value) =>
-                    _handleListingAction(context, listing, value),
+                    _handleListingAction(context, ref, listing, value),
               ),
             ],
           ),
@@ -565,31 +566,26 @@ class DashboardPage extends ConsumerWidget {
     );
   }
 
-  void _handleListingAction(
-      BuildContext context, ListingModel listing, String action) {
+  void _handleListingAction(BuildContext context, WidgetRef ref,
+      ListingModel listing, String action) {
     switch (action) {
       case 'edit':
         context.push('/edit-listing/${listing.id}');
         break;
       case 'duplicate':
-        // TODO: Implémenter la duplication
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Fonctionnalité à implémenter')),
-        );
+        _duplicateListing(context, ref, listing);
         break;
       case 'status':
-        // TODO: Changer le statut
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Fonctionnalité à implémenter')),
-        );
+        _changeListingStatus(context, ref, listing);
         break;
       case 'delete':
-        _showDeleteConfirmation(context, listing);
+        _showDeleteConfirmation(context, ref, listing);
         break;
     }
   }
 
-  void _showDeleteConfirmation(BuildContext context, ListingModel listing) {
+  void _showDeleteConfirmation(
+      BuildContext context, WidgetRef ref, ListingModel listing) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -602,12 +598,25 @@ class DashboardPage extends ConsumerWidget {
             child: const Text('Annuler'),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(context);
-              // TODO: Implémenter la suppression
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Annonce supprimée')),
-              );
+              try {
+                await ref
+                    .read(listingControllerProvider.notifier)
+                    .deleteListing(listing.id);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text('Annonce supprimée avec succès')),
+                  );
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Erreur: $e')),
+                  );
+                }
+              }
             },
             style: TextButton.styleFrom(foregroundColor: AppColors.error),
             child: const Text('Supprimer'),
@@ -619,10 +628,103 @@ class DashboardPage extends ConsumerWidget {
 
   String _formatNumber(int number) {
     if (number >= 1000000) {
-      return '${(number / 1000000).toStringAsFixed(1)}M';
+      return '\${(number / 1000000).toStringAsFixed(1)}M';
     } else if (number >= 1000) {
-      return '${(number / 1000).toStringAsFixed(1)}K';
+      return '\${(number / 1000).toStringAsFixed(1)}K';
     }
     return number.toString();
+  }
+
+  Future<void> _duplicateListing(
+      BuildContext context, WidgetRef ref, ListingModel listing) async {
+    try {
+      final duplicatedListing = listing.copyWith(
+        id: '', // Sera généré par Firebase
+        title: '${listing.title} (Copie)',
+        status: ListingStatus.inactive,
+        views: 0,
+        favoritesCount: 0,
+        createdAt: DateTime.now(),
+        updatedAt: null,
+      );
+
+      await ref
+          .read(listingControllerProvider.notifier)
+          .createListing(duplicatedListing);
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Annonce dupliquée avec succès')),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur lors de la duplication: $e')),
+        );
+      }
+    }
+  }
+
+  Future<void> _changeListingStatus(
+      BuildContext context, WidgetRef ref, ListingModel listing) async {
+    // Détermine le nouveau statut
+    ListingStatus newStatus;
+    if (listing.status == ListingStatus.active) {
+      newStatus = ListingStatus.inactive;
+    } else {
+      newStatus = ListingStatus.active;
+    }
+
+    // Affiche un dialogue de confirmation pour le statut "Louée"
+    if (listing.status == ListingStatus.active) {
+      final result = await showDialog<String>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Changer le statut'),
+          content: const Text('Quel statut souhaitez-vous appliquer ?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'cancel'),
+              child: const Text('Annuler'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'inactive'),
+              child: const Text('Désactiver'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'rented'),
+              child: const Text('Marquer comme louée'),
+            ),
+          ],
+        ),
+      );
+
+      if (result == 'cancel' || result == null) return;
+
+      if (result == 'inactive') {
+        newStatus = ListingStatus.inactive;
+      } else if (result == 'rented') {
+        newStatus = ListingStatus.rented;
+      }
+    }
+
+    try {
+      await ref
+          .read(listingControllerProvider.notifier)
+          .updateStatus(listing.id, newStatus);
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Statut changé: ${newStatus.displayName}')),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur: $e')),
+        );
+      }
+    }
   }
 }

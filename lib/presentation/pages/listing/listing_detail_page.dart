@@ -13,6 +13,7 @@ import 'package:logements_app/core/constants/app_colors.dart';
 import 'package:logements_app/data/models/listing_model.dart';
 import 'package:logements_app/presentation/providers/listing_provider.dart';
 import 'package:logements_app/presentation/providers/favorite_provider.dart';
+import 'package:logements_app/presentation/providers/auth_provider.dart';
 
 /// Page de détail d'une annonce
 class ListingDetailPage extends ConsumerStatefulWidget {
@@ -532,19 +533,78 @@ class _ListingDetailPageState extends ConsumerState<ListingDetailPage> {
   }
 
   Future<void> _callOwner(ListingModel listing) async {
-    // TODO: Récupérer le numéro du propriétaire
-    final phone = '+22890000000'; // Exemple
+    // Récupère le profil du propriétaire
+    final ownerProfile =
+        await ref.read(authRepositoryProvider).getUserProfile(listing.ownerId);
+
+    if (ownerProfile?.phoneNumber == null ||
+        ownerProfile!.phoneNumber!.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Numéro de téléphone non disponible'),
+          ),
+        );
+      }
+      return;
+    }
+
+    final phone = ownerProfile.phoneNumber!;
     final url = Uri.parse('tel:$phone');
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Impossible d\'ouvrir l\'application téléphone'),
+          ),
+        );
+      }
     }
   }
 
   Future<void> _messageOwner(ListingModel listing) async {
-    // TODO: Ouvrir la messagerie ou WhatsApp
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-          content: Text('Fonctionnalité de messagerie à implémenter')),
+    // Récupère le profil du propriétaire
+    final ownerProfile =
+        await ref.read(authRepositoryProvider).getUserProfile(listing.ownerId);
+
+    if (ownerProfile?.phoneNumber == null ||
+        ownerProfile!.phoneNumber!.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Numéro de téléphone non disponible'),
+          ),
+        );
+      }
+      return;
+    }
+
+    final phone = ownerProfile.phoneNumber!.replaceAll(RegExp(r'[^0-9+]'), '');
+    final message = Uri.encodeComponent(
+      'Bonjour, je suis intéressé(e) par votre annonce "${listing.title}" à ${listing.price} FCFA/mois.',
     );
+
+    // Essayer d'ouvrir WhatsApp
+    final whatsappUrl = Uri.parse('https://wa.me/$phone?text=$message');
+
+    if (await canLaunchUrl(whatsappUrl)) {
+      await launchUrl(whatsappUrl, mode: LaunchMode.externalApplication);
+    } else {
+      // Fallback: ouvrir l'application SMS
+      final smsUrl = Uri.parse('sms:$phone?body=$message');
+      if (await canLaunchUrl(smsUrl)) {
+        await launchUrl(smsUrl);
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Impossible d\'ouvrir la messagerie'),
+            ),
+          );
+        }
+      }
+    }
   }
 }
