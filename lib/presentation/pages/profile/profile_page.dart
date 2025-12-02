@@ -130,12 +130,7 @@ class ProfilePage extends ConsumerWidget {
                       icon: Icons.person_outline,
                       title: AppStrings.editProfile,
                       onTap: () {
-                        // TODO: Naviguer vers l'édition du profil
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Fonctionnalité à venir'),
-                          ),
-                        );
+                        context.push('/edit-profile');
                       },
                     ),
                     _ProfileMenuItem(

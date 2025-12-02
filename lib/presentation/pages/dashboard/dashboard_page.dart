@@ -23,7 +23,11 @@ class DashboardPage extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.notifications_outlined),
             onPressed: () {
-              // TODO: Implémenter les notifications
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Fonctionnalité notifications à venir'),
+                ),
+              );
             },
           ),
         ],

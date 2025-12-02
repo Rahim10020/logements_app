@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -31,11 +36,16 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   }
 
   void _loadUserData() {
-    // TODO: Charger les données utilisateur depuis Firebase
-    // Pour l'instant, on utilise des données fictives
-    _displayNameController.text = '';
-    _phoneController.text = '';
-    _bioController.text = '';
+    final user = ref.read(authStateProvider).value;
+    if (user != null) {
+      ref.read(currentUserProfileProvider).whenData((userProfile) {
+        if (userProfile != null) {
+          _displayNameController.text = userProfile.displayName ?? '';
+          _phoneController.text = userProfile.phoneNumber ?? '';
+          _selectedRole = userProfile.role;
+        }
+      });
+    }
   }
 
   @override
@@ -86,11 +96,38 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     });
 
     try {
-      // TODO: Sauvegarder les données dans Firebase
-      // 1. Uploader l'image si elle a été modifiée
-      // 2. Mettre à jour le profil utilisateur
+      final user = ref.read(authStateProvider).value;
+      if (user == null) throw Exception('Utilisateur non connecté');
 
-      await Future.delayed(const Duration(seconds: 2)); // Simulation
+      String? photoUrl;
+
+      // 1. Uploader l'image si elle a été modifiée
+      if (_selectedImage != null) {
+        final storageRef = FirebaseStorage.instance
+            .ref()
+            .child('users')
+            .child(user.uid)
+            .child('profile.jpg');
+
+        await storageRef.putFile(File(_selectedImage!.path));
+        photoUrl = await storageRef.getDownloadURL();
+      }
+
+      // 2. Mettre à jour le profil utilisateur
+      await ref.read(authControllerProvider.notifier).updateProfile(
+            userId: user.uid,
+            displayName: _displayNameController.text.trim(),
+            phoneNumber: _phoneController.text.trim(),
+            photoUrl: photoUrl,
+          );
+
+      // 3. Mettre à jour le rôle si changé
+      if (_selectedRole != null) {
+        await ref.read(authControllerProvider.notifier).updateRole(
+              user.uid,
+              _selectedRole!,
+            );
+      }
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -331,8 +368,14 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
               title: const Text('Notifications'),
               subtitle: const Text('Recevoir des notifications par email'),
               value: true,
-              onChanged: (value) {
-                // TODO: Sauvegarder la préférence
+              onChanged: (value) async {
+                final user = ref.read(authStateProvider).value;
+                if (user != null) {
+                  await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(user.uid)
+                      .update({'notificationsEnabled': value});
+                }
               },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -347,8 +390,14 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
               title: const Text('Newsletter'),
               subtitle: const Text('Recevoir les actualités TogoStay'),
               value: false,
-              onChanged: (value) {
-                // TODO: Sauvegarder la préférence
+              onChanged: (value) async {
+                final user = ref.read(authStateProvider).value;
+                if (user != null) {
+                  await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(user.uid)
+                      .update({'newsletterEnabled': value});
+                }
               },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -497,14 +546,41 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
             child: const Text('Annuler'),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               if (formKey.currentState!.validate()) {
-                // TODO: Changer le mot de passe
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                      content: Text('Mot de passe modifié avec succès')),
-                );
+                try {
+                  final user = FirebaseAuth.instance.currentUser;
+                  if (user == null) throw Exception('Non connecté');
+
+                  // Réauthentification
+                  final credential = EmailAuthProvider.credential(
+                    email: user.email!,
+                    password: currentPasswordController.text,
+                  );
+                  await user.reauthenticateWithCredential(credential);
+
+                  // Changement du mot de passe
+                  await user.updatePassword(newPasswordController.text);
+
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Mot de passe modifié avec succès'),
+                        backgroundColor: AppColors.success,
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Erreur: $e'),
+                        backgroundColor: AppColors.error,
+                      ),
+                    );
+                  }
+                }
               }
             },
             child: const Text('Modifier'),
@@ -546,9 +622,58 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
             child: const Text('Annuler'),
           ),
           ElevatedButton(
-            onPressed: () {
-              // TODO: Supprimer le compte
-              Navigator.pop(context);
+            onPressed: () async {
+              try {
+                final user = FirebaseAuth.instance.currentUser;
+                if (user == null) throw Exception('Non connecté');
+
+                // Réauthentification
+                final credential = EmailAuthProvider.credential(
+                  email: user.email!,
+                  password: passwordController.text,
+                );
+                await user.reauthenticateWithCredential(credential);
+
+                // Supprimer les données utilisateur de Firestore
+                await FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(user.uid)
+                    .delete();
+
+                // Supprimer toutes les annonces de l'utilisateur
+                final listings = await FirebaseFirestore.instance
+                    .collection('listings')
+                    .where('ownerId', isEqualTo: user.uid)
+                    .get();
+
+                for (var doc in listings.docs) {
+                  await doc.reference.delete();
+                }
+
+                // Supprimer le compte Firebase Auth
+                await user.delete();
+
+                if (context.mounted) {
+                  Navigator.pop(context);
+                  Navigator.of(context).pushReplacementNamed('/login');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Compte supprimé avec succès'),
+                      backgroundColor: AppColors.success,
+                    ),
+                  );
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Erreur: $e'),
+                      backgroundColor: AppColors.error,
+                    ),
+                  );
+                }
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.error,

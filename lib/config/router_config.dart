@@ -11,6 +11,7 @@ import 'package:logements_app/presentation/pages/search/search_page.dart';
 import 'package:logements_app/presentation/pages/dashboard/dashboard_page.dart';
 import 'package:logements_app/presentation/pages/listing/listing_detail_page.dart';
 import 'package:logements_app/presentation/pages/listing/add_listing_page.dart';
+import 'package:logements_app/presentation/pages/listing/edit_listing_page.dart';
 import 'package:logements_app/presentation/pages/main_page.dart';
 import 'package:logements_app/presentation/providers/auth_provider.dart';
 
@@ -131,9 +132,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/edit-listing/:id',
         builder: (context, state) {
-          // TODO: Créer EditListingPage (similaire à AddListingPage mais avec pré-remplissage)
-          // final id = state.pathParameters['id']!;
-          return const AddListingPage();
+          final id = state.pathParameters['id']!;
+          return EditListingPage(listingId: id);
         },
       ),
 
