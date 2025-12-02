@@ -17,7 +17,7 @@ class ProfilePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppStrings.profile),
+        title: const Text(AppStrings.profile),
       ),
       body: userProfileAsync.when(
         data: (user) {

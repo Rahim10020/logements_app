@@ -111,7 +111,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.home_work_outlined,
                               size: 64,
                               color: AppColors.grey400,
@@ -150,7 +150,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ),
                   );
                 },
-                loading: () => SliverFillRemaining(
+                loading: () => const SliverFillRemaining(
                   child: Center(
                     child: CircularProgressIndicator(),
                   ),
@@ -160,7 +160,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.error_outline,
                           size: 64,
                           color: AppColors.error,

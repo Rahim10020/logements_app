@@ -166,7 +166,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(AppStrings.alreadyHaveAccount),
+                    const Text(AppStrings.alreadyHaveAccount),
                     TextButtonCustom(
                       text: AppStrings.login,
                       onPressed: isLoading ? null : () => context.pop(),

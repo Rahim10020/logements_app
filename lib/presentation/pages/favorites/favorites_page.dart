@@ -20,13 +20,13 @@ class FavoritesPage extends ConsumerWidget {
     if (user == null) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(AppStrings.favorites),
+          title: const Text(AppStrings.favorites),
         ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.favorite_border,
                 size: 64,
                 color: AppColors.grey400,
@@ -46,7 +46,7 @@ class FavoritesPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppStrings.favorites),
+        title: const Text(AppStrings.favorites),
       ),
       body: favoritesAsync.when(
         data: (favoriteIds) {
@@ -55,7 +55,7 @@ class FavoritesPage extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.favorite_border,
                     size: 64,
                     color: AppColors.grey400,
