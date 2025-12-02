@@ -1,0 +1,4 @@
+- Dans le code: vérifie et aligne applicationId et namespace dans 
+    build.gradle.kts et le label du manifest dans AndroidManifest.xml.
+
+    com.land-tg.app
