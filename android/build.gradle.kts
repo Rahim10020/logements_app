@@ -1,10 +1,19 @@
+plugins {
+    id("com.android.application") apply false
+    id("com.android.library") apply false
+    id("org.jetbrains.kotlin.android") apply false
+}
+
+buildscript {
+    dependencies {
+        classpath("com.google.gms:google-services:4.3.15")
+    }
+}
+
 allprojects {
     repositories {
         google()
         mavenCentral()
-    }
-    dependencies {
-        classpath("com.google.gms:google-services:4.3.15")
     }
 }
 
