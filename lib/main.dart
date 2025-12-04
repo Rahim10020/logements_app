@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:logements_app/config/firebase_config.dart';
 import 'package:logements_app/config/router_config.dart';
 import 'package:logements_app/core/theme/app_theme.dart';
 import 'package:logements_app/presentation/providers/theme_provider.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Firebase
-  await FirebaseConfig.initialize();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   // Initialize SharedPreferences
   final sharedPreferences = await SharedPreferences.getInstance();
