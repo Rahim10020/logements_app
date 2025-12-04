@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "22776216354",
+    "project_id": "land-tg",
+    "storage_bucket": "land-tg.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:22776216354:android:8af20174515cd45406837b",
+        "android_client_info": {
+          "package_name": "com.example.logements_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "22776216354-u1v95rcefi59li1denl7tal2egh0rqej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3XWyRixGJBU7PtjMbEhv9_GGvGwEYaDA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "22776216354-u1v95rcefi59li1denl7tal2egh0rqej.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
