@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:logements_app/data/models/listing_model.dart';
 import 'package:logements_app/data/models/search_filter.dart';
 import 'package:logements_app/data/repositories/listing_repository.dart';

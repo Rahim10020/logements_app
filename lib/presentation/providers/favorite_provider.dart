@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:logements_app/data/repositories/favorite_repository.dart';
 import 'package:logements_app/presentation/providers/auth_provider.dart';
 
