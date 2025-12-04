@@ -514,13 +514,15 @@ class _ListingDetailPageState extends ConsumerState<ListingDetailPage> {
   }
 
   Future<void> _shareListing(ListingModel listing) async {
-    await Share.share(
-      '${listing.title}\n'
-      '${listing.price} FCFA/mois\n'
-      '${listing.neighborhood}, ${listing.city}\n'
-      '\n'
-      'Voir sur TogoStay: https://togostay.com/listing/${listing.id}',
-      subject: listing.title,
+    await SharePlus.instance.share(
+      ShareParams(
+        text: '${listing.title}\n'
+            '${listing.price} FCFA/mois\n'
+            '${listing.neighborhood}, ${listing.city}\n'
+            '\n'
+            'Voir sur TogoStay: https://togostay.com/listing/${listing.id}',
+        subject: listing.title,
+      ),
     );
   }
 
