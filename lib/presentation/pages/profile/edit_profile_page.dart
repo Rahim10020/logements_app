@@ -285,7 +285,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
 
             // Rôle
             DropdownButtonFormField<UserRole>(
-              value: _selectedRole,
+              initialValue: _selectedRole,
               decoration: const InputDecoration(
                 labelText: 'Je suis',
                 prefixIcon: Icon(Icons.work_outline),

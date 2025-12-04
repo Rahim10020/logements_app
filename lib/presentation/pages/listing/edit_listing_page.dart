@@ -259,7 +259,7 @@ class _EditListingPageState extends ConsumerState<EditListingPage> {
             const SizedBox(height: 16),
 
             DropdownButtonFormField<ListingType>(
-              value: _selectedType,
+              initialValue: _selectedType,
               decoration: const InputDecoration(
                 labelText: 'Type de logement',
               ),
@@ -303,7 +303,7 @@ class _EditListingPageState extends ConsumerState<EditListingPage> {
             const SizedBox(height: 16),
 
             DropdownButtonFormField<String>(
-              value: _selectedCity,
+              initialValue: _selectedCity,
               decoration: const InputDecoration(
                 labelText: 'Ville',
               ),
@@ -330,7 +330,7 @@ class _EditListingPageState extends ConsumerState<EditListingPage> {
 
             if (_selectedCity != null)
               DropdownButtonFormField<String>(
-                value: _selectedNeighborhood,
+                initialValue: _selectedNeighborhood,
                 decoration: const InputDecoration(
                   labelText: 'Quartier',
                 ),
@@ -391,7 +391,7 @@ class _EditListingPageState extends ConsumerState<EditListingPage> {
             const SizedBox(height: 16),
 
             DropdownButtonFormField<int>(
-              value: _selectedBedrooms,
+              initialValue: _selectedBedrooms,
               decoration: const InputDecoration(
                 labelText: 'Nombre de chambres',
               ),
@@ -414,7 +414,7 @@ class _EditListingPageState extends ConsumerState<EditListingPage> {
             const SizedBox(height: 16),
 
             DropdownButtonFormField<int>(
-              value: _selectedBathrooms,
+              initialValue: _selectedBathrooms,
               decoration: const InputDecoration(
                 labelText: 'Nombre de salles de bain',
               ),

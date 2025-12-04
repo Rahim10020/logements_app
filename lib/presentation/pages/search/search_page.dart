@@ -188,7 +188,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
             children: [
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  value: filter.city,
+                  initialValue: filter.city,
                   decoration: const InputDecoration(
                     labelText: 'Ville',
                     prefixIcon: Icon(Icons.location_city),
@@ -208,7 +208,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
               const SizedBox(width: 16),
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  value: filter.neighborhood,
+                  initialValue: filter.neighborhood,
                   decoration: const InputDecoration(
                     labelText: 'Quartier',
                     prefixIcon: Icon(Icons.location_on),
@@ -234,7 +234,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
 
           // Type de logement
           DropdownButtonFormField<ListingType>(
-            value: filter.type,
+            initialValue: filter.type,
             decoration: const InputDecoration(
               labelText: 'Type de logement',
               prefixIcon: Icon(Icons.home),
@@ -341,7 +341,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
             children: [
               Expanded(
                 child: DropdownButtonFormField<int>(
-                  value: filter.minBedrooms,
+                  initialValue: filter.minBedrooms,
                   decoration: const InputDecoration(
                     labelText: 'Chambres min',
                     prefixIcon: Icon(Icons.bed),
@@ -362,7 +362,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
               const SizedBox(width: 16),
               Expanded(
                 child: DropdownButtonFormField<int>(
-                  value: filter.minBathrooms,
+                  initialValue: filter.minBathrooms,
                   decoration: const InputDecoration(
                     labelText: 'Salles de bain min',
                     prefixIcon: Icon(Icons.bathroom),
