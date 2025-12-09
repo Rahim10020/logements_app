@@ -8,6 +8,7 @@ import '../../../shared/widgets/loading_indicator.dart';
 import '../../../shared/widgets/error_widget.dart';
 import '../../../data/repositories/user_repository.dart';
 import '../../../data/models/user_model.dart';
+import '../../../data/models/listing_model.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../saved/providers/saved_provider.dart';
 import '../providers/listing_detail_provider.dart';
@@ -238,7 +239,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
   }
 
   /// Section informations principales
-  Widget _buildMainInfo(listing, NumberFormat formatter) {
+  Widget _buildMainInfo(ListingModel listing, NumberFormat formatter) {
     return Container(
       padding: const EdgeInsets.all(20),
       color: Colors.white,
@@ -345,7 +346,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
   }
 
   /// Section description
-  Widget _buildDescription(listing) {
+  Widget _buildDescription(ListingModel listing) {
     if (listing.description.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -400,7 +401,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
   }
 
   /// Partager l'annonce
-  void _shareListing(listing) {
+  void _shareListing(ListingModel listing) {
     final text = '''
 ${listing.propertyType} à louer - ${listing.neighborhood}, ${listing.city}
 

@@ -13,9 +13,8 @@ class AmenitiesGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Filtrer uniquement les commodités actives
-    final activeAmenities = amenities.entries
-        .where((entry) => entry.value)
-        .toList();
+    final activeAmenities =
+        amenities.entries.where((entry) => entry.value).toList();
 
     if (activeAmenities.isEmpty) {
       return const SizedBox.shrink();
@@ -63,10 +62,10 @@ class AmenitiesGrid extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.05),
+        color: AppColors.primary.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: AppColors.primary.withOpacity(0.2),
+          color: AppColors.primary.withValues(alpha: 0.2),
         ),
       ),
       child: Row(
@@ -132,4 +131,3 @@ class AmenitiesGrid extends StatelessWidget {
     }
   }
 }
-
