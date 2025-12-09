@@ -44,6 +44,8 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
 
   Future<void> _loadData() async {
     final detailProvider = context.read<ListingDetailProvider>();
+    final authProvider = context.read<AuthProvider>();
+    final savedProvider = context.read<SavedProvider>();
     await detailProvider.fetchListingById(widget.listingId);
 
     // Charger les infos du propriétaire
@@ -62,8 +64,6 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
     }
 
     // Charger les favoris de l'utilisateur
-    final authProvider = context.read<AuthProvider>();
-    final savedProvider = context.read<SavedProvider>();
     if (authProvider.currentUser != null) {
       savedProvider.loadSavedIds(authProvider.currentUser!.uid);
     }
