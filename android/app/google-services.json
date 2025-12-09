@@ -29,6 +29,13 @@
             {
               "client_id": "22776216354-u1v95rcefi59li1denl7tal2egh0rqej.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "22776216354-qa14tl4v6u97qfvk9vfeogmjjpdohos4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.logementsApp"
+              }
             }
           ]
         }

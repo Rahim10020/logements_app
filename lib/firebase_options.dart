@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -33,10 +30,7 @@ class DefaultFirebaseOptions {
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -66,4 +60,23 @@ class DefaultFirebaseOptions {
     iosClientId: '22776216354-qa14tl4v6u97qfvk9vfeogmjjpdohos4.apps.googleusercontent.com',
     iosBundleId: 'com.example.logementsApp',
   );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBN2gyH-1IT11qEZ4_48iTtLsbnHXJFPXI',
+    appId: '1:22776216354:web:069c916a063db46906837b',
+    messagingSenderId: '22776216354',
+    projectId: 'land-tg',
+    authDomain: 'land-tg.firebaseapp.com',
+    storageBucket: 'land-tg.firebasestorage.app',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyBN2gyH-1IT11qEZ4_48iTtLsbnHXJFPXI',
+    appId: '1:22776216354:web:ca81eb01478880cc06837b',
+    messagingSenderId: '22776216354',
+    projectId: 'land-tg',
+    authDomain: 'land-tg.firebaseapp.com',
+    storageBucket: 'land-tg.firebasestorage.app',
+  );
+
 }
