@@ -5,6 +5,9 @@ import 'package:logements_app/core/config/app_router.dart';
 import 'package:logements_app/core/theme/app_theme.dart';
 import 'package:logements_app/shared/providers/theme_provider.dart';
 import 'package:logements_app/features/auth/providers/auth_provider.dart';
+import 'package:logements_app/features/home/providers/home_provider.dart';
+import 'package:logements_app/features/saved/providers/saved_provider.dart';
+import 'package:logements_app/features/listing_detail/providers/listing_detail_provider.dart';
 
 /// Widget racine de l'application
 class App extends ConsumerWidget {
@@ -17,6 +20,9 @@ class App extends ConsumerWidget {
     return provider.MultiProvider(
       providers: [
         provider.ChangeNotifierProvider(create: (_) => AuthProvider()),
+        provider.ChangeNotifierProvider(create: (_) => HomeProvider()),
+        provider.ChangeNotifierProvider(create: (_) => SavedProvider()),
+        provider.ChangeNotifierProvider(create: (_) => ListingDetailProvider()),
       ],
       child: MaterialApp.router(
         title: 'TogoStay',

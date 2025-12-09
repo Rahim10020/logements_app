@@ -4,42 +4,72 @@ import '../../features/auth/screens/login_screen.dart';
 import '../../features/auth/screens/register_screen.dart';
 import '../../features/auth/screens/forgot_password_screen.dart';
 import '../../features/auth/screens/role_selection_screen.dart';
+import '../../features/home/screens/home_screen.dart';
+import '../../features/saved/screens/saved_listings_screen.dart';
+import '../../features/listing_detail/screens/listing_detail_screen.dart';
 
 /// Configuration du routing avec GoRouter
 class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/login',
+    initialLocation: '/home',
     debugLogDiagnostics: true,
     routes: [
       // Routes d'authentification
       GoRoute(
-        path: '/login',
-        name: 'login',
+        path: '/auth/login',
+        name: 'auth-login',
         builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
-        path: '/register',
-        name: 'register',
+        path: '/login',
+        redirect: (context, state) => '/auth/login',
+      ),
+      GoRoute(
+        path: '/auth/register',
+        name: 'auth-register',
         builder: (context, state) => const RegisterScreen(),
       ),
       GoRoute(
-        path: '/forgot-password',
-        name: 'forgot-password',
+        path: '/register',
+        redirect: (context, state) => '/auth/register',
+      ),
+      GoRoute(
+        path: '/auth/forgot-password',
+        name: 'auth-forgot-password',
         builder: (context, state) => const ForgotPasswordScreen(),
       ),
       GoRoute(
-        path: '/role-selection',
-        name: 'role-selection',
+        path: '/forgot-password',
+        redirect: (context, state) => '/auth/forgot-password',
+      ),
+      GoRoute(
+        path: '/auth/role-selection',
+        name: 'auth-role-selection',
         builder: (context, state) => const RoleSelectionScreen(),
+      ),
+      GoRoute(
+        path: '/role-selection',
+        redirect: (context, state) => '/auth/role-selection',
       ),
 
       // Routes principales
       GoRoute(
+        path: '/',
+        redirect: (context, state) => '/home',
+      ),
+      GoRoute(
         path: '/home',
         name: 'home',
-        builder: (context, state) => const MainScreen(),
+        builder: (context, state) => const HomeScreen(),
+      ),
+
+      // Route des favoris
+      GoRoute(
+        path: '/saved',
+        name: 'saved',
+        builder: (context, state) => const SavedListingsScreen(),
       ),
 
       // Routes de détail
@@ -52,27 +82,36 @@ class AppRouter {
         },
       ),
 
-      // Routes du dashboard
+      // Route de recherche (à implémenter)
       GoRoute(
-        path: '/dashboard/add-listing',
-        name: 'add-listing',
-        builder: (context, state) => const AddListingScreen(),
-      ),
-      GoRoute(
-        path: '/dashboard/edit-listing/:id',
-        name: 'edit-listing',
-        builder: (context, state) {
-          final id = state.pathParameters['id']!;
-          return EditListingScreen(listingId: id);
-        },
+        path: '/search',
+        name: 'search',
+        builder: (context, state) => const Scaffold(
+          body: Center(child: Text('Recherche - À implémenter')),
+        ),
       ),
 
-      // Routes du profil
-      GoRoute(
-        path: '/profile/edit',
-        name: 'edit-profile',
-        builder: (context, state) => const EditProfileScreen(),
-      ),
+      // TODO: Routes du dashboard
+      // GoRoute(
+      //   path: '/dashboard/add-listing',
+      //   name: 'add-listing',
+      //   builder: (context, state) => const AddListingScreen(),
+      // ),
+      // GoRoute(
+      //   path: '/dashboard/edit-listing/:id',
+      //   name: 'edit-listing',
+      //   builder: (context, state) {
+      //     final id = state.pathParameters['id']!;
+      //     return EditListingScreen(listingId: id);
+      //   },
+      // ),
+
+      // TODO: Routes du profil
+      // GoRoute(
+      //   path: '/profile/edit',
+      //   name: 'edit-profile',
+      //   builder: (context, state) => const EditProfileScreen(),
+      // ),
     ],
 
     errorBuilder: (context, state) => Scaffold(
