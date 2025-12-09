@@ -1,39 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/auth/screens/login_screen.dart';
+import '../../features/auth/screens/register_screen.dart';
+import '../../features/auth/screens/forgot_password_screen.dart';
+import '../../features/auth/screens/role_selection_screen.dart';
 
 /// Configuration du routing avec GoRouter
 class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/auth/login',
+    initialLocation: '/login',
     debugLogDiagnostics: true,
     routes: [
       // Routes d'authentification
       GoRoute(
-        path: '/auth/login',
+        path: '/login',
         name: 'login',
         builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
-        path: '/auth/register',
+        path: '/register',
         name: 'register',
         builder: (context, state) => const RegisterScreen(),
       ),
       GoRoute(
-        path: '/auth/forgot-password',
+        path: '/forgot-password',
         name: 'forgot-password',
         builder: (context, state) => const ForgotPasswordScreen(),
       ),
       GoRoute(
-        path: '/auth/role-selection',
+        path: '/role-selection',
         name: 'role-selection',
         builder: (context, state) => const RoleSelectionScreen(),
       ),
 
       // Routes principales
       GoRoute(
-        path: '/',
+        path: '/home',
         name: 'home',
         builder: (context, state) => const MainScreen(),
       ),
@@ -84,7 +88,7 @@ class AppRouter {
             ),
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: () => context.go('/'),
+              onPressed: () => context.go('/home'),
               child: const Text('Retour à l\'accueil'),
             ),
           ],
@@ -95,53 +99,6 @@ class AppRouter {
 }
 
 // Placeholder screens - Seront implémentés dans les phases suivantes
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Connexion')),
-      body: const Center(child: Text('Login Screen - Phase 2')),
-    );
-  }
-}
-
-class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Inscription')),
-      body: const Center(child: Text('Register Screen - Phase 2')),
-    );
-  }
-}
-
-class ForgotPasswordScreen extends StatelessWidget {
-  const ForgotPasswordScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Mot de passe oublié')),
-      body: const Center(child: Text('Forgot Password Screen - Phase 2')),
-    );
-  }
-}
-
-class RoleSelectionScreen extends StatelessWidget {
-  const RoleSelectionScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Sélection du rôle')),
-      body: const Center(child: Text('Role Selection Screen - Phase 2')),
-    );
-  }
-}
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
