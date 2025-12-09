@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../shared/widgets/loading_indicator.dart';
+import '../../../data/models/user_model.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../providers/profile_provider.dart';
 import '../widgets/profile_menu_item.dart';
@@ -234,7 +235,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   /// En-tête du profil
-  Widget _buildProfileHeader(user) {
+  Widget _buildProfileHeader(UserModel user) {
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.all(24),
@@ -254,9 +255,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 child: ClipOval(
-                  child: user.photoURL != null && user.photoURL!.isNotEmpty
+                  child: user.photoURL.isNotEmpty
                       ? CachedNetworkImage(
-                          imageUrl: user.photoURL!,
+                          imageUrl: user.photoURL,
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Container(
                             color: Colors.grey[200],
@@ -350,7 +351,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildAvatarPlaceholder(user) {
+  Widget _buildAvatarPlaceholder(UserModel user) {
     return Container(
       color: AppColors.primary.withValues(alpha: 0.1),
       child: Center(
