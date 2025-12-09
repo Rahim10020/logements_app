@@ -133,7 +133,7 @@ lib/
 ## 📸 Captures d'Écrans Créés
 
 ### Login Screen
-- Logo TogoStay centré
+- Logo Ahoe centré
 - Champs email et mot de passe stylisés
 - Boutons sociaux (Google, Facebook)
 - Lien mot de passe oublié
@@ -169,7 +169,7 @@ Voir le fichier `PHASE2_TESTS.md` pour la liste complète des tests à effectuer
 flutter run
 
 # 2. Tester l'inscription
-- Email: test@togostay.com
+- Email: test@Ahoe.com
 - Nom: Jean Dupont
 - Téléphone: +228 90 12 34 56
 - Ville: Lomé
@@ -222,7 +222,7 @@ flutter run
 - [ ] Définir règles Firestore initiales
 
 ### Assets
-- [ ] Ajouter logo TogoStay (assets/images/logo.png)
+- [ ] Ajouter logo Ahoe (assets/images/logo.png)
 - [ ] Ajouter icône Google (assets/icons/google.png)
 - [ ] Ajouter icône Facebook (assets/icons/facebook.png)
 
@@ -291,5 +291,5 @@ Le code est propre, commenté en français, et prêt pour la production.
 ---
 
 **Développé avec ❤️ par GitHub Copilot**  
-**Projet**: TogoStay - Trouvez votre chez-vous au Togo 🇹🇬
+**Projet**: Ahoe - Trouvez votre chez-vous au Togo 🇹🇬
 

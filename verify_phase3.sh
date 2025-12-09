@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Script de vérification de la Phase 3
-# TogoStay - Core Features
+# Ahoe - Core Features
 
 echo "🔍 Vérification de la Phase 3 - Core Features"
 echo "=============================================="

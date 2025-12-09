@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 // Section Hero
                 const HeroSection(),
-                
+
                 // Barre de recherche
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -80,14 +80,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () => context.push('/search'),
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Filtres rapides
                 _buildQuickFilters(homeProvider),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Annonces par quartier
                 ...homeProvider.listingsByNeighborhood.entries.map(
                   (entry) {
@@ -100,7 +100,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             return ListingCard(
                               listing: listing,
                               isFavorite: savedProvider.isSaved(listing.id),
-                              onTap: () => context.push('/listing/${listing.id}'),
+                              onTap: () =>
+                                  context.push('/listing/${listing.id}'),
                               onFavorite: () => _toggleFavorite(listing.id),
                             );
                           },
@@ -131,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(width: 8),
           const Text(
-            'TogoStay',
+            'Ahoe',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
@@ -166,7 +167,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         minHeight: 16,
                       ),
                       child: Text(
-                        savedProvider.count > 9 ? '9+' : '${savedProvider.count}',
+                        savedProvider.count > 9
+                            ? '9+'
+                            : '${savedProvider.count}',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 10,
@@ -257,4 +260,3 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 }
-

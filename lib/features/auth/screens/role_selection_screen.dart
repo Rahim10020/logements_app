@@ -69,7 +69,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
 
               // Titre et description
               const Text(
-                'Comment souhaitez-vous\nutiliser TogoStay ?',
+                'Comment souhaitez-vous\nutiliser Ahoe ?',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,

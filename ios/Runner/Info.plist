@@ -46,10 +46,10 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>TogoStay a besoin d'accéder à votre localisation pour afficher les annonces à proximité</string>
+	<string>Ahoe a besoin d'accéder à votre localisation pour afficher les annonces à proximité</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>TogoStay a besoin d'accéder à vos photos pour ajouter des images aux annonces</string>
+	<string>Ahoe a besoin d'accéder à vos photos pour ajouter des images aux annonces</string>
 	<key>NSCameraUsageDescription</key>
-	<string>TogoStay a besoin d'accéder à votre caméra pour prendre des photos d'annonces</string>
+	<string>Ahoe a besoin d'accéder à votre caméra pour prendre des photos d'annonces</string>
 </dict>
 </plist>

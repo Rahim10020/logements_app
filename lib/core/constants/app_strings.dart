@@ -1,4 +1,4 @@
-/// Chaînes de caractères de l'application TogoStay
+/// Chaînes de caractères de l'application Ahoe
 class AppStrings {
   AppStrings._();
   // App

@@ -249,5 +249,5 @@ La Phase 2 est **100% complète** ! Tous les écrans d'authentification sont fon
 
 **Créé le**: 9 Décembre 2025
 **Développeur**: GitHub Copilot
-**Projet**: TogoStay - Application de location immobilière au Togo
+**Projet**: Ahoe - Application de location immobilière au Togo
 

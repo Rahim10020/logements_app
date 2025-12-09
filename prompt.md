@@ -1,4 +1,4 @@
-# Prompt pour Développement Application TogoStay - Flutter
+# Prompt pour Développement Application Ahoe - Flutter
 
 ## 🎯 Objectif
 Créer une application mobile Flutter complète pour la location immobilière au Togo, avec un design **minimaliste et clean**. L'application permettra aux utilisateurs de chercher des logements et aux propriétaires de publier leurs annonces.
@@ -315,7 +315,7 @@ class TogoLocations {
 **Écrans**: Login, Register, Role Selection, Forgot Password
 
 **Login Screen**:
-- Logo TogoStay en haut (centré)
+- Logo Ahoe en haut (centré)
 - TextField Email (avec validation)
 - TextField Password (avec icône show/hide)
 - Lien "Mot de passe oublié?" (texte petit, gris)
@@ -360,7 +360,7 @@ class AuthProvider extends ChangeNotifier {
 ### 2. Home Screen
 **Layout**:
 - AppBar:
-    - Logo TogoStay (gauche)
+    - Logo Ahoe (gauche)
     - Icône Search (droite)
     - Icône Favorites avec badge count (droite)
     - Icône Menu (droite)

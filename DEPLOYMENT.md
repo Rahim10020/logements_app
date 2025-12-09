@@ -1,4 +1,4 @@
-# Guide de Déploiement - TogoStay
+# Guide de Déploiement - Ahoe
 
 ## 📦 Préparation pour la Production
 
@@ -16,11 +16,11 @@ class EnvConfig {
   static String get firebaseProjectId {
     switch (currentEnv) {
       case Environment.dev:
-        return 'togostay-dev';
+        return 'Ahoe-dev';
       case Environment.staging:
-        return 'togostay-staging';
+        return 'Ahoe-staging';
       case Environment.prod:
-        return 'togostay-prod';
+        return 'Ahoe-prod';
     }
   }
   
@@ -67,8 +67,8 @@ class EnvConfig {
 Créez un keystore:
 
 ```bash
-keytool -genkey -v -keystore ~/togostay-release.keystore \
-  -alias togostay -keyalg RSA -keysize 2048 -validity 10000
+keytool -genkey -v -keystore ~/Ahoe-release.keystore \
+  -alias Ahoe -keyalg RSA -keysize 2048 -validity 10000
 ```
 
 Créez `android/key.properties`:
@@ -76,8 +76,8 @@ Créez `android/key.properties`:
 ```properties
 storePassword=VOTRE_STORE_PASSWORD
 keyPassword=VOTRE_KEY_PASSWORD
-keyAlias=togostay
-storeFile=/path/to/togostay-release.keystore
+keyAlias=Ahoe
+storeFile=/path/to/Ahoe-release.keystore
 ```
 
 Modifiez `android/app/build.gradle.kts`:
@@ -137,7 +137,7 @@ Le fichier sera dans: `build/app/outputs/bundle/release/app-release.aab`
 1. Allez sur [Google Play Console](https://play.google.com/console)
 2. Créez une nouvelle application
 3. Remplissez les informations:
-   - Titre: TogoStay
+   - Titre: Ahoe
    - Description courte et longue
    - Screenshots (minimum 2 par type d'appareil)
    - Icon 512x512
@@ -157,7 +157,7 @@ Ouvrez `ios/Runner.xcworkspace` dans Xcode:
 1. Sélectionnez Runner > Signing & Capabilities
 2. Activez "Automatically manage signing"
 3. Sélectionnez votre Team
-4. Vérifiez le Bundle Identifier: `com.togostay.app`
+4. Vérifiez le Bundle Identifier: `com.Ahoe.app`
 
 ### 2. Configuration App Store Connect
 
@@ -291,7 +291,7 @@ void main() async {
   
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   
-  runApp(const TogoStayApp());
+  runApp(const AhoeApp());
 }
 ```
 

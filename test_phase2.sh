@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # 🚀 Script de test rapide pour Phase 2 - Authentification
-# TogoStay - Application de location immobilière au Togo
+# Ahoe - Application de location immobilière au Togo
 
 echo "════════════════════════════════════════════════════════════"
-echo "  TogoStay - Phase 2: Authentification - Tests Rapides"
+echo "  Ahoe - Phase 2: Authentification - Tests Rapides"
 echo "════════════════════════════════════════════════════════════"
 echo ""
 

@@ -84,7 +84,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
 
           return RefreshIndicator(
-            onRefresh: () => profileProvider.refresh(authProvider.currentUser!.uid),
+            onRefresh: () =>
+                profileProvider.refresh(authProvider.currentUser!.uid),
             color: AppColors.primary,
             child: ListView(
               children: [
@@ -164,7 +165,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ProfileMenuItem(
                         icon: Icons.privacy_tip_outlined,
                         title: 'Confidentialité',
-                        onTap: () => _showComingSoon('Politique de confidentialité'),
+                        onTap: () =>
+                            _showComingSoon('Politique de confidentialité'),
                         iconColor: AppColors.info,
                       ),
                       ProfileMenuItem(
@@ -215,7 +217,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 // Version
                 Center(
                   child: Text(
-                    'TogoStay v0.6.0',
+                    'Ahoe v0.6.0',
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey[500],
@@ -262,7 +264,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: CircularProgressIndicator(strokeWidth: 2),
                             ),
                           ),
-                          errorWidget: (context, url, error) => _buildAvatarPlaceholder(user),
+                          errorWidget: (context, url, error) =>
+                              _buildAvatarPlaceholder(user),
                         )
                       : _buildAvatarPlaceholder(user),
                 ),
@@ -405,7 +408,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           borderRadius: BorderRadius.circular(12),
         ),
         title: const Text('Bientôt disponible'),
-        content: Text('La fonctionnalité "$feature" sera disponible prochainement.'),
+        content:
+            Text('La fonctionnalité "$feature" sera disponible prochainement.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -496,4 +500,3 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 }
-

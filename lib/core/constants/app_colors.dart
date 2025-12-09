@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-/// Couleurs de l'application TogoStay
+/// Couleurs de l'application Ahoe
 class AppColors {
   AppColors._(); // Constructeur privé pour empêcher l'instanciation
 
   // Couleurs primaires
   static const Color primary = Color(0xFF2563EB); // Bleu moderne
   static const Color secondary = Color(0xFF10B981); // Vert pour succès
-  static const Color accent = Color(0xFFF59E0B); // Orange pour actions importantes
+  static const Color accent =
+      Color(0xFFF59E0B); // Orange pour actions importantes
 
   // Couleurs neutres
   static const Color grey600 = Color(0xFF6B7280);
@@ -37,4 +38,3 @@ class AppColors {
   static const Color badgeAvailable = Color(0xFF10B981);
   static const Color badgeRented = Color(0xFFF59E0B);
 }
-

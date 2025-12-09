@@ -1,4 +1,4 @@
-# TogoStay - État du Projet
+# Ahoe - État du Projet
 
 Dernière mise à jour: 9 décembre 2024
 
@@ -525,7 +525,7 @@ Pour toute question ou problème:
 
 **🎉 PROJET COMPLET - 100% RÉALISÉ (7/7 phases) 🎉**
 
-**L'application TogoStay est terminée et prête pour production !**
+**L'application Ahoe est terminée et prête pour production !**
 
 Dernière mise à jour: Phase 7 complétée - Projet finalisé avec succès! 🏆
 

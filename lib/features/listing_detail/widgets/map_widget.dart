@@ -68,7 +68,7 @@ class MapWidget extends StatelessWidget {
           // Tuiles OpenStreetMap
           TileLayer(
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            userAgentPackageName: 'com.togostay.app',
+            userAgentPackageName: 'com.Ahoe.app',
           ),
           // Marqueur de position
           MarkerLayer(
@@ -90,4 +90,3 @@ class MapWidget extends StatelessWidget {
     );
   }
 }
-

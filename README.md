@@ -1,10 +1,10 @@
-# 🏠 TogoStay - Application de Location Immobilière
+# 🏠 Ahoe - Application de Location Immobilière
 
 Application mobile Flutter pour la recherche et la gestion de logements au Togo.
 
 ## 📱 À propos
 
-TogoStay est une plateforme moderne de location immobilière dédiée au marché togolais. L'application permet aux utilisateurs de :
+Ahoe est une plateforme moderne de location immobilière dédiée au marché togolais. L'application permet aux utilisateurs de :
 - 🔍 Rechercher des logements (appartements, villas, studios, chambres)
 - ❤️ Sauvegarder leurs annonces favorites
 - 📞 Contacter directement les propriétaires

@@ -30,12 +30,13 @@ class App extends ConsumerWidget {
         provider.ChangeNotifierProvider(create: (_) => ListingDetailProvider()),
         provider.ChangeNotifierProvider(create: (_) => SearchProvider()),
         provider.ChangeNotifierProvider(create: (_) => DashboardProvider()),
-        provider.ChangeNotifierProvider(create: (_) => AddEditListingProvider()),
+        provider.ChangeNotifierProvider(
+            create: (_) => AddEditListingProvider()),
         provider.ChangeNotifierProvider(create: (_) => ProfileProvider()),
         provider.ChangeNotifierProvider(create: (_) => ChatProvider()),
       ],
       child: MaterialApp.router(
-        title: 'TogoStay',
+        title: 'Ahoe',
         debugShowCheckedModeBanner: false,
 
         // Thème
@@ -55,4 +56,3 @@ class App extends ConsumerWidget {
     );
   }
 }
-

@@ -2,7 +2,7 @@
 
 ## Résumé de la Phase 1
 
-Excellente nouvelle ! La **Phase 1 (Setup)** de l'application TogoStay est **TERMINÉE** avec succès !
+Excellente nouvelle ! La **Phase 1 (Setup)** de l'application Ahoe est **TERMINÉE** avec succès !
 
 ### Ce qui a été fait :
 

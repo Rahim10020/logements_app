@@ -179,7 +179,7 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('TogoStay')),
+      appBar: AppBar(title: const Text('Ahoe')),
       body: const Center(child: Text('Main Screen with Bottom Nav - Phase 3')),
     );
   }

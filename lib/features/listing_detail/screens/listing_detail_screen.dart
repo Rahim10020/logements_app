@@ -412,9 +412,9 @@ ${listing.propertyType} à louer - ${listing.neighborhood}, ${listing.city}
 
 ${listing.description.isNotEmpty ? listing.description : ''}
 
-Via TogoStay
+Via Ahoe
 ''';
-    Share.share(text, subject: 'Annonce TogoStay');
+    Share.share(text, subject: 'Annonce Ahoe');
   }
 
   /// Toggle favori

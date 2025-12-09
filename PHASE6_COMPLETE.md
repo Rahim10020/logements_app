@@ -229,7 +229,7 @@ ProfileProvider
 │                             │
 │    Supprimer mon compte     │
 │                             │
-│    TogoStay v0.6.0          │
+│    Ahoe v0.6.0          │
 └─────────────────────────────┘
 ```
 
@@ -421,7 +421,7 @@ ProfileProvider
 
 Les utilisateurs peuvent maintenant gérer complètement leur profil !
 
-L'application TogoStay est maintenant **quasi-complète** avec 6 phases sur 7 terminées.
+L'application Ahoe est maintenant **quasi-complète** avec 6 phases sur 7 terminées.
 
 Prêt pour la Phase 7 finale - Notifications & Chat ? 💬
 
