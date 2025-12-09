@@ -12,6 +12,7 @@ import 'package:logements_app/features/search/providers/search_provider.dart';
 import 'package:logements_app/features/dashboard/providers/dashboard_provider.dart';
 import 'package:logements_app/features/dashboard/providers/add_edit_listing_provider.dart';
 import 'package:logements_app/features/profile/providers/profile_provider.dart';
+import 'package:logements_app/features/chat/providers/chat_provider.dart';
 
 /// Widget racine de l'application
 class App extends ConsumerWidget {
@@ -31,6 +32,7 @@ class App extends ConsumerWidget {
         provider.ChangeNotifierProvider(create: (_) => DashboardProvider()),
         provider.ChangeNotifierProvider(create: (_) => AddEditListingProvider()),
         provider.ChangeNotifierProvider(create: (_) => ProfileProvider()),
+        provider.ChangeNotifierProvider(create: (_) => ChatProvider()),
       ],
       child: MaterialApp.router(
         title: 'TogoStay',

@@ -13,6 +13,8 @@ import '../../features/dashboard/screens/add_edit_listing_screen.dart';
 import '../../features/profile/screens/profile_screen.dart';
 import '../../features/profile/screens/edit_profile_screen.dart';
 import '../../features/profile/screens/settings_screen.dart';
+import '../../features/chat/screens/conversations_screen.dart';
+import '../../features/chat/screens/chat_screen.dart';
 
 /// Configuration du routing avec GoRouter
 class AppRouter {
@@ -130,6 +132,22 @@ class AppRouter {
         path: '/profile/settings',
         name: 'settings',
         builder: (context, state) => const SettingsScreen(),
+      ),
+
+      // Routes chat
+      GoRoute(
+        path: '/conversations',
+        name: 'conversations',
+        builder: (context, state) => const ConversationsScreen(),
+      ),
+      GoRoute(
+        path: '/chat/:id',
+        name: 'chat',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          final extra = state.extra as Map<String, dynamic>?;
+          return ChatScreen(conversationId: id, extra: extra);
+        },
       ),
     ],
 
