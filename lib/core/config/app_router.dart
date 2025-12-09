@@ -7,6 +7,7 @@ import '../../features/auth/screens/role_selection_screen.dart';
 import '../../features/home/screens/home_screen.dart';
 import '../../features/saved/screens/saved_listings_screen.dart';
 import '../../features/listing_detail/screens/listing_detail_screen.dart';
+import '../../features/search/screens/search_screen.dart';
 
 /// Configuration du routing avec GoRouter
 class AppRouter {
@@ -86,9 +87,7 @@ class AppRouter {
       GoRoute(
         path: '/search',
         name: 'search',
-        builder: (context, state) => const Scaffold(
-          body: Center(child: Text('Recherche - À implémenter')),
-        ),
+        builder: (context, state) => const SearchScreen(),
       ),
 
       // TODO: Routes du dashboard
