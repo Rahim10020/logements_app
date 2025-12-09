@@ -8,6 +8,8 @@ import '../../features/home/screens/home_screen.dart';
 import '../../features/saved/screens/saved_listings_screen.dart';
 import '../../features/listing_detail/screens/listing_detail_screen.dart';
 import '../../features/search/screens/search_screen.dart';
+import '../../features/dashboard/screens/dashboard_screen.dart';
+import '../../features/dashboard/screens/add_edit_listing_screen.dart';
 
 /// Configuration du routing avec GoRouter
 class AppRouter {
@@ -90,20 +92,25 @@ class AppRouter {
         builder: (context, state) => const SearchScreen(),
       ),
 
-      // TODO: Routes du dashboard
-      // GoRoute(
-      //   path: '/dashboard/add-listing',
-      //   name: 'add-listing',
-      //   builder: (context, state) => const AddListingScreen(),
-      // ),
-      // GoRoute(
-      //   path: '/dashboard/edit-listing/:id',
-      //   name: 'edit-listing',
-      //   builder: (context, state) {
-      //     final id = state.pathParameters['id']!;
-      //     return EditListingScreen(listingId: id);
-      //   },
-      // ),
+      // Routes dashboard
+      GoRoute(
+        path: '/dashboard',
+        name: 'dashboard',
+        builder: (context, state) => const DashboardScreen(),
+      ),
+      GoRoute(
+        path: '/dashboard/add-listing',
+        name: 'add-listing',
+        builder: (context, state) => const AddEditListingScreen(),
+      ),
+      GoRoute(
+        path: '/dashboard/edit-listing/:id',
+        name: 'edit-listing',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return AddEditListingScreen(listingId: id);
+        },
+      ),
 
       // TODO: Routes du profil
       // GoRoute(
