@@ -24,7 +24,7 @@ class _SavedListingsScreenState extends State<SavedListingsScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final authProvider = context.read<AuthProvider>();
       final savedProvider = context.read<SavedProvider>();
-      
+
       if (authProvider.currentUser != null) {
         savedProvider.fetchSavedListings(authProvider.currentUser!.uid);
       }
@@ -70,7 +70,7 @@ class _SavedListingsScreenState extends State<SavedListingsScreen> {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.1),
+                      color: AppColors.primary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
@@ -100,7 +100,8 @@ class _SavedListingsScreenState extends State<SavedListingsScreen> {
             return EmptyState(
               icon: Icons.favorite_border,
               title: 'Aucun favori',
-              message: 'Vous n\'avez pas encore ajouté d\'annonces à vos favoris.',
+              message:
+                  'Vous n\'avez pas encore ajouté d\'annonces à vos favoris.',
               buttonText: 'Découvrir des annonces',
               onButtonPressed: () => context.go('/'),
             );
@@ -210,4 +211,3 @@ class _SavedListingsScreenState extends State<SavedListingsScreen> {
     }
   }
 }
-

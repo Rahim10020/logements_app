@@ -404,8 +404,8 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
                   filled: true,
                   fillColor: Colors.white,
                 ),
-                items: List.generate(6, (i) => i + 1).map((num) {
-                  return DropdownMenuItem(value: num, child: Text('$num'));
+                items: List.generate(6, (i) => i + 1).map((value) {
+                  return DropdownMenuItem(value: value, child: Text('$value'));
                 }).toList(),
                 onChanged: (value) {
                   if (value != null) provider.setBathrooms(value);

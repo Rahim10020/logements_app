@@ -75,7 +75,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.6),
+                  color: Colors.black.withValues(alpha: 0.6),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: SmoothPageIndicator(
@@ -146,4 +146,3 @@ class _ImageCarouselState extends State<ImageCarousel> {
     );
   }
 }
-
