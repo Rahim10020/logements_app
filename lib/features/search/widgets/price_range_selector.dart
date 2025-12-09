@@ -76,8 +76,8 @@ class _PriceRangeSelectorState extends State<PriceRangeSelector> {
           activeColor: AppColors.primary,
           inactiveColor: AppColors.primary.withValues(alpha: 0.2),
           labels: RangeLabels(
-            '${formatter.format(_currentRange.start.toInt())}',
-            '${formatter.format(_currentRange.end.toInt())}',
+            formatter.format(_currentRange.start.toInt()),
+            formatter.format(_currentRange.end.toInt()),
           ),
           onChanged: (RangeValues values) {
             setState(() {
@@ -92,4 +92,3 @@ class _PriceRangeSelectorState extends State<PriceRangeSelector> {
     );
   }
 }
-

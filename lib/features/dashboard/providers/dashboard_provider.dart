@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../../../data/models/listing_model.dart';
 import '../../../data/repositories/listing_repository.dart';
 
@@ -11,7 +10,7 @@ class DashboardProvider extends ChangeNotifier {
   List<ListingModel> _myListings = [];
   bool _isLoading = true;
   String? _errorMessage;
-  
+
   // Statistiques
   int _totalViews = 0;
   int _totalFavorites = 0;
@@ -110,4 +109,3 @@ class DashboardProvider extends ChangeNotifier {
     await fetchMyListings(userId);
   }
 }
-

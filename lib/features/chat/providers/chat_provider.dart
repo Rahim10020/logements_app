@@ -8,7 +8,7 @@ class ChatProvider extends ChangeNotifier {
 
   // État
   List<Map<String, dynamic>> _conversations = [];
-  List<MessageModel> _messages = [];
+  final List<MessageModel> _messages = [];
   bool _isLoading = true;
   String? _errorMessage;
   int _unreadCount = 0;
@@ -222,7 +222,10 @@ class ChatProvider extends ChangeNotifier {
         final data = conv.data()!;
         final lastMsg = data['lastMessage'] as Map<String, dynamic>?;
         if (lastMsg != null && lastMsg['receiverId'] == userId) {
-          await _firestore.collection('conversations').doc(conversationId).update({
+          await _firestore
+              .collection('conversations')
+              .doc(conversationId)
+              .update({
             'lastMessage.isRead': true,
           });
         }
@@ -265,4 +268,3 @@ class ChatProvider extends ChangeNotifier {
     }
   }
 }
-

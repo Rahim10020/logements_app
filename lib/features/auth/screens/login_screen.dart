@@ -10,7 +10,7 @@ import '../widgets/auth_text_field.dart';
 /// Écran de connexion
 /// Design minimaliste avec authentification email/password et sociale
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -289,4 +289,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-

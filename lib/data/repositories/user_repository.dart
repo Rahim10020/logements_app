@@ -9,10 +9,8 @@ class UserRepository {
   /// Récupérer un utilisateur par ID
   Future<UserModel?> getUserById(String userId) async {
     try {
-      final doc = await _firestore
-          .collection(_collectionName)
-          .doc(userId)
-          .get();
+      final doc =
+          await _firestore.collection(_collectionName).doc(userId).get();
 
       if (doc.exists) {
         return UserModel.fromFirestore(doc);
@@ -50,10 +48,7 @@ class UserRepository {
   /// Supprimer un utilisateur
   Future<void> deleteUser(String userId) async {
     try {
-      await _firestore
-          .collection(_collectionName)
-          .doc(userId)
-          .delete();
+      await _firestore.collection(_collectionName).doc(userId).delete();
     } catch (e) {
       throw Exception('Erreur lors de la suppression de l\'utilisateur: $e');
     }
@@ -62,10 +57,8 @@ class UserRepository {
   /// Vérifier si un utilisateur existe
   Future<bool> userExists(String userId) async {
     try {
-      final doc = await _firestore
-          .collection(_collectionName)
-          .doc(userId)
-          .get();
+      final doc =
+          await _firestore.collection(_collectionName).doc(userId).get();
       return doc.exists;
     } catch (e) {
       throw Exception('Erreur lors de la vérification de l\'utilisateur: $e');
@@ -86,4 +79,3 @@ class UserRepository {
     });
   }
 }
-

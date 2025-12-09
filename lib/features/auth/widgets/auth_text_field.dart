@@ -19,7 +19,7 @@ class AuthTextField extends StatefulWidget {
   final void Function(String)? onChanged;
 
   const AuthTextField({
-    Key? key,
+    super.key,
     required this.label,
     this.hint,
     required this.controller,
@@ -32,7 +32,7 @@ class AuthTextField extends StatefulWidget {
     this.enabled = true,
     this.inputFormatters,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<AuthTextField> createState() => _AuthTextFieldState();
@@ -152,4 +152,3 @@ class _AuthTextFieldState extends State<AuthTextField> {
     );
   }
 }
-

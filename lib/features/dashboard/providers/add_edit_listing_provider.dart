@@ -13,7 +13,7 @@ class AddEditListingProvider extends ChangeNotifier {
   // État
   bool _isLoading = false;
   String? _errorMessage;
-  List<File> _selectedImages = [];
+  final List<File> _selectedImages = [];
   List<String> _uploadedImageUrls = [];
   double _uploadProgress = 0.0;
 
@@ -224,9 +224,10 @@ class AddEditListingProvider extends ChangeNotifier {
   Future<void> pickImages() async {
     try {
       final List<XFile> images = await _picker.pickMultiImage();
-      
+
       // Limiter à 10 images au total
-      final remainingSlots = 10 - _selectedImages.length - _uploadedImageUrls.length;
+      final remainingSlots =
+          10 - _selectedImages.length - _uploadedImageUrls.length;
       final imagesToAdd = images.take(remainingSlots).toList();
 
       for (var image in imagesToAdd) {
@@ -255,7 +256,7 @@ class AddEditListingProvider extends ChangeNotifier {
   /// Uploader les images vers Firebase Storage
   Future<List<String>> _uploadImages(String userId) async {
     List<String> urls = [];
-    
+
     for (int i = 0; i < _selectedImages.length; i++) {
       try {
         final file = _selectedImages[i];
@@ -267,10 +268,12 @@ class AddEditListingProvider extends ChangeNotifier {
             .child(fileName);
 
         final uploadTask = ref.putFile(file);
-        
+
         // Suivre la progression
         uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
-          _uploadProgress = (i + snapshot.bytesTransferred / snapshot.totalBytes) / _selectedImages.length;
+          _uploadProgress =
+              (i + snapshot.bytesTransferred / snapshot.totalBytes) /
+                  _selectedImages.length;
           notifyListeners();
         });
 
@@ -509,4 +512,3 @@ class AddEditListingProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
-

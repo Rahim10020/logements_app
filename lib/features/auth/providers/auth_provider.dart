@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import '../../../data/models/user_model.dart';
 
 /// Provider pour gérer l'authentification des utilisateurs
@@ -10,8 +9,6 @@ import '../../../data/models/user_model.dart';
 class AuthProvider extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  // GoogleSignIn sera initialisé plus tard si nécessaire
-  GoogleSignIn? _googleSignIn;
 
   // État actuel de l'utilisateur
   User? _currentUser;
@@ -150,30 +147,9 @@ class AuthProvider extends ChangeNotifier {
       _setLoading(true);
       _errorMessage = null;
 
-      // Initialiser GoogleSignIn si ce n'est pas déjà fait
-      _googleSignIn ??= GoogleSignIn(scopes: ['email']);
-
-      // Déclencher le flux d'authentification Google
-      final GoogleSignInAccount? googleUser = await _googleSignIn!.signIn();
-
-      if (googleUser == null) {
-        // L'utilisateur a annulé la connexion
-        _setLoading(false);
-        return false;
-      }
-
-      // Obtenir les détails d'authentification
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-
-      // Créer les credentials
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      // Se connecter à Firebase avec les credentials
-      final userCredential = await _auth.signInWithCredential(credential);
+      // Se connecter avec le fournisseur Google via FirebaseAuth
+      final userCredential =
+          await _auth.signInWithProvider(GoogleAuthProvider());
 
       if (userCredential.user != null) {
         // Vérifier si l'utilisateur existe déjà dans Firestore
@@ -277,9 +253,6 @@ class AuthProvider extends ChangeNotifier {
   /// Déconnexion
   Future<void> signOut() async {
     try {
-      if (_googleSignIn != null) {
-        await _googleSignIn!.signOut();
-      }
       await _auth.signOut();
       _userModel = null;
       _currentUser = null;
@@ -328,4 +301,3 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
-

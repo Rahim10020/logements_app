@@ -9,12 +9,12 @@ class SocialAuthButton extends StatelessWidget {
   final bool isLoading;
 
   const SocialAuthButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.iconPath,
     required this.onPressed,
     this.isLoading = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -63,4 +63,3 @@ class SocialAuthButton extends StatelessWidget {
     );
   }
 }
-

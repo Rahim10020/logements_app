@@ -53,11 +53,12 @@ class SettingsScreen extends StatelessWidget {
                   icon: Icons.notifications_active_outlined,
                   title: 'Notifications Push',
                   subtitle: 'Activées',
-                  onTap: () => _showComingSoon(context, 'Gestion des notifications'),
+                  onTap: () =>
+                      _showComingSoon(context, 'Gestion des notifications'),
                   trailing: Switch(
                     value: true,
                     onChanged: (value) {},
-                    activeColor: AppColors.primary,
+                    activeThumbColor: AppColors.primary,
                   ),
                 ),
                 ProfileMenuItem(
@@ -68,7 +69,7 @@ class SettingsScreen extends StatelessWidget {
                   trailing: Switch(
                     value: true,
                     onChanged: (value) {},
-                    activeColor: AppColors.primary,
+                    activeThumbColor: AppColors.primary,
                   ),
                   showDivider: false,
                 ),
@@ -102,7 +103,7 @@ class SettingsScreen extends StatelessWidget {
                   trailing: Switch(
                     value: false,
                     onChanged: (value) {},
-                    activeColor: AppColors.primary,
+                    activeThumbColor: AppColors.primary,
                   ),
                 ),
                 ProfileMenuItem(
@@ -137,7 +138,8 @@ class SettingsScreen extends StatelessWidget {
                 ProfileMenuItem(
                   icon: Icons.lock_outlined,
                   title: 'Changer le mot de passe',
-                  onTap: () => _showComingSoon(context, 'Changement de mot de passe'),
+                  onTap: () =>
+                      _showComingSoon(context, 'Changement de mot de passe'),
                   iconColor: AppColors.info,
                 ),
                 ProfileMenuItem(
@@ -195,7 +197,8 @@ class SettingsScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         title: const Text('Bientôt disponible'),
-        content: Text('La fonctionnalité "$feature" sera disponible prochainement.'),
+        content:
+            Text('La fonctionnalité "$feature" sera disponible prochainement.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -206,4 +209,3 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 }
-

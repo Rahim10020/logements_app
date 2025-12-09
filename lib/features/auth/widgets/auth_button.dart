@@ -13,7 +13,7 @@ class AuthButton extends StatelessWidget {
   final IconData? icon;
 
   const AuthButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPressed,
     this.isLoading = false,
@@ -21,7 +21,7 @@ class AuthButton extends StatelessWidget {
     this.backgroundColor,
     this.textColor,
     this.icon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -78,4 +78,3 @@ class AuthButton extends StatelessWidget {
     );
   }
 }
-

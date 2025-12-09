@@ -6,12 +6,10 @@ import '../../features/auth/screens/forgot_password_screen.dart';
 import '../../features/auth/screens/role_selection_screen.dart';
 import '../../features/home/screens/home_screen.dart';
 import '../../features/saved/screens/saved_listings_screen.dart';
-import '../../features/listing_detail/screens/listing_detail_screen.dart';
 import '../../features/search/screens/search_screen.dart';
 import '../../features/dashboard/screens/dashboard_screen.dart';
 import '../../features/dashboard/screens/add_edit_listing_screen.dart';
 import '../../features/profile/screens/profile_screen.dart';
-import '../../features/profile/screens/edit_profile_screen.dart';
 import '../../features/profile/screens/settings_screen.dart';
 import '../../features/chat/screens/conversations_screen.dart';
 import '../../features/chat/screens/chat_screen.dart';
@@ -150,7 +148,6 @@ class AppRouter {
         },
       ),
     ],
-
     errorBuilder: (context, state) => Scaffold(
       body: Center(
         child: Column(
@@ -239,4 +236,3 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 }
-

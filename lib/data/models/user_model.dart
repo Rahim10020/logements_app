@@ -56,6 +56,29 @@ class UserModel {
     };
   }
 
+  /// Créer un UserModel depuis un document Firestore
+  factory UserModel.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return UserModel(
+      id: doc.id,
+      uid: data['uid'] ?? '',
+      email: data['email'] ?? '',
+      displayName: data['displayName'] ?? '',
+      role: data['role'] ?? '',
+      city: data['city'] ?? '',
+      phone: data['phone'] ?? '',
+      photoURL: data['photoURL'] ?? '',
+      createdAt: data['createdAt'] is Timestamp
+          ? (data['createdAt'] as Timestamp).toDate()
+          : DateTime.now(),
+    );
+  }
+
+  /// Convertir le UserModel en Map pour Firestore
+  Map<String, dynamic> toFirestore() {
+    return toJson();
+  }
+
   /// Créer une copie du modèle avec des champs modifiés
   UserModel copyWith({
     String? id,
@@ -92,4 +115,3 @@ class UserModel {
     return 'UserModel(id: $id, email: $email, displayName: $displayName, role: $role)';
   }
 }
-

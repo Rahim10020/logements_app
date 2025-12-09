@@ -8,14 +8,15 @@ class HomeProvider extends ChangeNotifier {
 
   // État
   List<ListingModel> _listings = [];
-  Map<String, List<ListingModel>> _listingsByNeighborhood = {};
+  final Map<String, List<ListingModel>> _listingsByNeighborhood = {};
   bool _isLoading = true;
   String? _errorMessage;
   String _selectedFilter = 'Tous';
 
   // Getters
   List<ListingModel> get listings => _listings;
-  Map<String, List<ListingModel>> get listingsByNeighborhood => _listingsByNeighborhood;
+  Map<String, List<ListingModel>> get listingsByNeighborhood =>
+      _listingsByNeighborhood;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   String get selectedFilter => _selectedFilter;
@@ -73,9 +74,8 @@ class HomeProvider extends ChangeNotifier {
       groupListingsByNeighborhood();
     } else {
       _listingsByNeighborhood.clear();
-      final filteredListings = _listings
-          .where((listing) => listing.propertyType == filter)
-          .toList();
+      final filteredListings =
+          _listings.where((listing) => listing.propertyType == filter).toList();
 
       for (var listing in filteredListings) {
         if (!_listingsByNeighborhood.containsKey(listing.neighborhood)) {
@@ -111,4 +111,3 @@ class HomeProvider extends ChangeNotifier {
     return _listingsByNeighborhood[neighborhood]?.length ?? 0;
   }
 }
-

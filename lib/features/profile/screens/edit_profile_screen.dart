@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'dart:io';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/cities_data.dart';
 import '../../../shared/widgets/loading_indicator.dart';
+import '../../../data/models/user_model.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../providers/profile_provider.dart';
 
@@ -21,7 +21,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   final _displayNameController = TextEditingController();
   final _phoneController = TextEditingController();
-  
+
   String? _selectedCity;
   bool _hasChanges = false;
 
@@ -158,7 +158,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                 // Ville
                 DropdownButtonFormField<String>(
-                  value: _selectedCity,
+                  initialValue: _selectedCity,
                   decoration: InputDecoration(
                     labelText: 'Ville *',
                     prefixIcon: const Icon(Icons.location_city_outlined),
@@ -285,7 +285,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  Widget _buildAvatarPlaceholder(user) {
+  Widget _buildAvatarPlaceholder(UserModel user) {
     return Container(
       color: AppColors.primary.withValues(alpha: 0.1),
       child: Center(
@@ -436,4 +436,3 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 }
-

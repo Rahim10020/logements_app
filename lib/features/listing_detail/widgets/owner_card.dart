@@ -37,11 +37,11 @@ class OwnerCard extends StatelessWidget {
               // Photo de profil
               CircleAvatar(
                 radius: 30,
-                backgroundImage: owner.photoURL != null && owner.photoURL!.isNotEmpty
-                    ? NetworkImage(owner.photoURL!)
+                backgroundImage: owner.photoURL.isNotEmpty
+                    ? NetworkImage(owner.photoURL)
                     : null,
                 backgroundColor: AppColors.primary.withValues(alpha: 0.1),
-                child: owner.photoURL == null || owner.photoURL!.isEmpty
+                child: owner.photoURL.isEmpty
                     ? Text(
                         owner.displayName.isNotEmpty
                             ? owner.displayName[0].toUpperCase()
@@ -214,4 +214,3 @@ class OwnerCard extends StatelessWidget {
     }
   }
 }
-

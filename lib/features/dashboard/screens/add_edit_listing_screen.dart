@@ -41,12 +41,13 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
   Future<void> _loadListing() async {
     final provider = context.read<AddEditListingProvider>();
     await provider.loadListing(widget.listingId!);
-    
+
     // Remplir les controllers
     _descriptionController.text = provider.description;
     _addressController.text = provider.address ?? '';
     _areaController.text = provider.area > 0 ? provider.area.toString() : '';
-    _priceController.text = provider.monthlyPrice > 0 ? provider.monthlyPrice.toString() : '';
+    _priceController.text =
+        provider.monthlyPrice > 0 ? provider.monthlyPrice.toString() : '';
   }
 
   @override
@@ -127,7 +128,8 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
 
   /// Section photos
   Widget _buildPhotosSection(AddEditListingProvider provider) {
-    final totalImages = provider.selectedImages.length + provider.uploadedImageUrls.length;
+    final totalImages =
+        provider.selectedImages.length + provider.uploadedImageUrls.length;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,11 +179,13 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.add_photo_alternate, size: 32, color: Colors.grey[600]),
+                        Icon(Icons.add_photo_alternate,
+                            size: 32, color: Colors.grey[600]),
                         const SizedBox(height: 8),
                         Text(
                           'Ajouter',
-                          style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                          style:
+                              TextStyle(color: Colors.grey[600], fontSize: 13),
                         ),
                       ],
                     ),
@@ -210,14 +214,17 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
     );
   }
 
-  Widget _buildImagePreview({File? imageFile, String? imageUrl, required VoidCallback onRemove}) {
+  Widget _buildImagePreview(
+      {File? imageFile, String? imageUrl, required VoidCallback onRemove}) {
     return Container(
       width: 120,
       margin: const EdgeInsets.only(right: 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         image: DecorationImage(
-          image: imageFile != null ? FileImage(imageFile) : NetworkImage(imageUrl!) as ImageProvider,
+          image: imageFile != null
+              ? FileImage(imageFile)
+              : NetworkImage(imageUrl!) as ImageProvider,
           fit: BoxFit.cover,
         ),
       ),
@@ -263,7 +270,7 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
         const SizedBox(height: 12),
         // Ville
         DropdownButtonFormField<String>(
-          value: provider.city.isEmpty ? null : provider.city,
+          initialValue: provider.city.isEmpty ? null : provider.city,
           decoration: InputDecoration(
             labelText: 'Ville *',
             border: OutlineInputBorder(
@@ -286,7 +293,8 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
         const SizedBox(height: 16),
         // Quartier
         DropdownButtonFormField<String>(
-          value: provider.neighborhood.isEmpty ? null : provider.neighborhood,
+          initialValue:
+              provider.neighborhood.isEmpty ? null : provider.neighborhood,
           decoration: InputDecoration(
             labelText: 'Quartier *',
             border: OutlineInputBorder(
@@ -297,8 +305,10 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
           ),
           items: provider.city.isEmpty
               ? []
-              : TogoLocations.neighborhoods[provider.city]!.map((neighborhood) {
-                  return DropdownMenuItem(value: neighborhood, child: Text(neighborhood));
+              : TogoLocations.getNeighborhoods(provider.city)
+                  .map((neighborhood) {
+                  return DropdownMenuItem(
+                      value: neighborhood, child: Text(neighborhood));
                 }).toList(),
           onChanged: (value) {
             if (value != null) provider.setNeighborhood(value);
@@ -341,7 +351,8 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
         const SizedBox(height: 12),
         // Type de propriété
         DropdownButtonFormField<String>(
-          value: provider.propertyType.isEmpty ? null : provider.propertyType,
+          initialValue:
+              provider.propertyType.isEmpty ? null : provider.propertyType,
           decoration: InputDecoration(
             labelText: 'Type de bien *',
             border: OutlineInputBorder(
@@ -364,7 +375,7 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
           children: [
             Expanded(
               child: DropdownButtonFormField<int>(
-                value: provider.bedrooms,
+                initialValue: provider.bedrooms,
                 decoration: InputDecoration(
                   labelText: 'Chambres *',
                   border: OutlineInputBorder(
@@ -373,8 +384,8 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
                   filled: true,
                   fillColor: Colors.white,
                 ),
-                items: List.generate(11, (i) => i).map((num) {
-                  return DropdownMenuItem(value: num, child: Text('$num'));
+                items: List.generate(11, (i) => i).map((value) {
+                  return DropdownMenuItem(value: value, child: Text('$value'));
                 }).toList(),
                 onChanged: (value) {
                   if (value != null) provider.setBedrooms(value);
@@ -384,7 +395,7 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
             const SizedBox(width: 16),
             Expanded(
               child: DropdownButtonFormField<int>(
-                value: provider.bathrooms,
+                initialValue: provider.bathrooms,
                 decoration: InputDecoration(
                   labelText: 'Salles de bain *',
                   border: OutlineInputBorder(
@@ -497,7 +508,8 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
           maxLines: 5,
           decoration: InputDecoration(
             labelText: 'Description détaillée *',
-            hintText: 'Décrivez votre bien, son environnement, ses avantages...',
+            hintText:
+                'Décrivez votre bien, son environnement, ses avantages...',
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -508,7 +520,9 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
           onChanged: provider.setDescription,
           validator: (value) {
             if (value == null || value.isEmpty) return 'Champ requis';
-            if (value.length < 20) return 'Description trop courte (min 20 caractères)';
+            if (value.length < 20) {
+              return 'Description trop courte (min 20 caractères)';
+            }
             return null;
           },
         ),
@@ -534,21 +548,36 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
           spacing: 8,
           runSpacing: 8,
           children: [
-            _buildAmenityChip('Meublé', provider.furnished, provider.toggleFurnished),
-            _buildAmenityChip('Climatisation', provider.airConditioning, provider.toggleAirConditioning),
+            _buildAmenityChip(
+                'Meublé', provider.furnished, provider.toggleFurnished),
+            _buildAmenityChip('Climatisation', provider.airConditioning,
+                provider.toggleAirConditioning),
             _buildAmenityChip('WiFi', provider.wifi, provider.toggleWifi),
-            _buildAmenityChip('Parking', provider.parking, provider.toggleParking),
-            _buildAmenityChip('Cuisine équipée', provider.equippedKitchen, provider.toggleEquippedKitchen),
-            _buildAmenityChip('Balcon', provider.balcony, provider.toggleBalcony),
-            _buildAmenityChip('Générateur', provider.generator, provider.toggleGenerator),
-            _buildAmenityChip('Château d\'eau', provider.waterTank, provider.toggleWaterTank),
-            _buildAmenityChip('Forage', provider.borehole, provider.toggleBorehole),
-            _buildAmenityChip('Sécurité', provider.security, provider.toggleSecurity),
+            _buildAmenityChip(
+                'Parking', provider.parking, provider.toggleParking),
+            _buildAmenityChip('Cuisine équipée', provider.equippedKitchen,
+                provider.toggleEquippedKitchen),
+            _buildAmenityChip(
+                'Balcon', provider.balcony, provider.toggleBalcony),
+            _buildAmenityChip(
+                'Générateur', provider.generator, provider.toggleGenerator),
+            _buildAmenityChip(
+                'Château d\'eau', provider.waterTank, provider.toggleWaterTank),
+            _buildAmenityChip(
+                'Forage', provider.borehole, provider.toggleBorehole),
+            _buildAmenityChip(
+                'Sécurité', provider.security, provider.toggleSecurity),
             _buildAmenityChip('Clôturé', provider.fence, provider.toggleFence),
-            _buildAmenityChip('Sol carrelé', provider.tiledFloor, provider.toggleTiledFloor),
-            _buildAmenityChip('Ventilateur', provider.ceilingFan, provider.toggleCeilingFan),
-            _buildAmenityChip('Compteur électrique', provider.individualElectricMeter, provider.toggleIndividualElectricMeter),
-            _buildAmenityChip('Compteur d\'eau', provider.individualWaterMeter, provider.toggleIndividualWaterMeter),
+            _buildAmenityChip(
+                'Sol carrelé', provider.tiledFloor, provider.toggleTiledFloor),
+            _buildAmenityChip(
+                'Ventilateur', provider.ceilingFan, provider.toggleCeilingFan),
+            _buildAmenityChip(
+                'Compteur électrique',
+                provider.individualElectricMeter,
+                provider.toggleIndividualElectricMeter),
+            _buildAmenityChip('Compteur d\'eau', provider.individualWaterMeter,
+                provider.toggleIndividualWaterMeter),
           ],
         ),
       ],
@@ -616,7 +645,9 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
                     ),
                   )
                 : Text(
-                    isEditing ? 'Enregistrer les modifications' : 'Publier l\'annonce',
+                    isEditing
+                        ? 'Enregistrer les modifications'
+                        : 'Publier l\'annonce',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -650,7 +681,8 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
 
     try {
       if (isEditing) {
-        await provider.updateListing(widget.listingId!, authProvider.currentUser!.uid);
+        await provider.updateListing(
+            widget.listingId!, authProvider.currentUser!.uid);
       } else {
         await provider.createListing(authProvider.currentUser!.uid);
       }
@@ -680,4 +712,3 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
     }
   }
 }
-

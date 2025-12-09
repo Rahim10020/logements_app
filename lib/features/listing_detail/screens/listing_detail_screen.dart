@@ -48,7 +48,8 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
     // Charger les infos du propriétaire
     if (detailProvider.listing != null) {
       try {
-        _owner = await _userRepository.getUserById(detailProvider.listing!.userId);
+        _owner =
+            await _userRepository.getUserById(detailProvider.listing!.userId);
       } catch (e) {
         debugPrint('Erreur chargement propriétaire: $e');
       }
@@ -143,7 +144,9 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(8),
                               child: Icon(
-                                isFavorite ? Icons.favorite : Icons.favorite_border,
+                                isFavorite
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
                                 color: isFavorite ? Colors.red : Colors.black,
                               ),
                             ),
@@ -246,7 +249,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
@@ -283,7 +286,8 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
               const SizedBox(width: 20),
               _buildFeature(Icons.bathtub_outlined, '${listing.bathrooms} SDB'),
               const SizedBox(width: 20),
-              _buildFeature(Icons.square_foot_outlined, '${listing.area.toInt()} m²'),
+              _buildFeature(
+                  Icons.square_foot_outlined, '${listing.area.toInt()} m²'),
             ],
           ),
           const SizedBox(height: 16),
@@ -447,4 +451,3 @@ Via TogoStay
     }
   }
 }
-

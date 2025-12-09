@@ -23,7 +23,7 @@ class SearchProvider extends ChangeNotifier {
   int? _minBathrooms;
   double? _minArea;
   double? _maxArea;
-  Set<String> _selectedAmenities = {};
+  final Set<String> _selectedAmenities = {};
 
   // Tri
   String _sortBy = 'date'; // date, price_asc, price_desc, popularity
@@ -181,17 +181,18 @@ class SearchProvider extends ChangeNotifier {
   void _applyAdditionalFilters() {
     // Filtre par salles de bain
     if (_minBathrooms != null) {
-      _searchResults = _searchResults
-          .where((l) => l.bathrooms >= _minBathrooms!)
-          .toList();
+      _searchResults =
+          _searchResults.where((l) => l.bathrooms >= _minBathrooms!).toList();
     }
 
     // Filtre par surface
     if (_minArea != null) {
-      _searchResults = _searchResults.where((l) => l.area >= _minArea!).toList();
+      _searchResults =
+          _searchResults.where((l) => l.area >= _minArea!).toList();
     }
     if (_maxArea != null) {
-      _searchResults = _searchResults.where((l) => l.area <= _maxArea!).toList();
+      _searchResults =
+          _searchResults.where((l) => l.area <= _maxArea!).toList();
     }
 
     // Filtre par commodités
@@ -227,7 +228,8 @@ class SearchProvider extends ChangeNotifier {
         _searchResults.sort((a, b) => b.monthlyPrice.compareTo(a.monthlyPrice));
         break;
       case 'popularity':
-        _searchResults.sort((a, b) => b.favoritesCount.compareTo(a.favoritesCount));
+        _searchResults
+            .sort((a, b) => b.favoritesCount.compareTo(a.favoritesCount));
         break;
       case 'area_asc':
         _searchResults.sort((a, b) => a.area.compareTo(b.area));
@@ -272,4 +274,3 @@ class SearchProvider extends ChangeNotifier {
     await search();
   }
 }
-
