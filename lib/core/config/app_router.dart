@@ -10,6 +10,9 @@ import '../../features/listing_detail/screens/listing_detail_screen.dart';
 import '../../features/search/screens/search_screen.dart';
 import '../../features/dashboard/screens/dashboard_screen.dart';
 import '../../features/dashboard/screens/add_edit_listing_screen.dart';
+import '../../features/profile/screens/profile_screen.dart';
+import '../../features/profile/screens/edit_profile_screen.dart';
+import '../../features/profile/screens/settings_screen.dart';
 
 /// Configuration du routing avec GoRouter
 class AppRouter {
@@ -112,12 +115,22 @@ class AppRouter {
         },
       ),
 
-      // TODO: Routes du profil
-      // GoRoute(
-      //   path: '/profile/edit',
-      //   name: 'edit-profile',
-      //   builder: (context, state) => const EditProfileScreen(),
-      // ),
+      // Routes profil
+      GoRoute(
+        path: '/profile',
+        name: 'profile',
+        builder: (context, state) => const ProfileScreen(),
+      ),
+      GoRoute(
+        path: '/profile/edit',
+        name: 'edit-profile',
+        builder: (context, state) => const EditProfileScreen(),
+      ),
+      GoRoute(
+        path: '/profile/settings',
+        name: 'settings',
+        builder: (context, state) => const SettingsScreen(),
+      ),
     ],
 
     errorBuilder: (context, state) => Scaffold(
