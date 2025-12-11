@@ -9,5 +9,4 @@ class FirebaseConfig {
   static const String conversationsCollection = 'conversations';
   // Storage Paths
   static const String profileImagesPath = 'profile_images';
-  static const String listingImagesPath = 'listing_images';
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:appwrite/appwrite.dart';
+import '../../../core/config/appwrite_config.dart';
 import 'dart:io';
 import '../../../data/models/listing_model.dart';
 import '../../../data/repositories/listing_repository.dart';
@@ -253,33 +254,39 @@ class AddEditListingProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Uploader les images vers Firebase Storage
+  /// Uploader les images vers Appwrite Storage
   Future<List<String>> _uploadImages(String userId) async {
     List<String> urls = [];
+    
+    // Init Appwrite
+    final client = Client()
+        .setEndpoint(AppwriteConfig.endpoint)
+        .setProject(AppwriteConfig.projectId);
+    final storage = Storage(client);
 
     for (int i = 0; i < _selectedImages.length; i++) {
       try {
         final file = _selectedImages[i];
         final fileName = '${DateTime.now().millisecondsSinceEpoch}_$i.jpg';
-        final ref = FirebaseStorage.instance
-            .ref()
-            .child('listings')
-            .child(userId)
-            .child(fileName);
+        
+        final result = await storage.createFile(
+          bucketId: AppwriteConfig.bucketId,
+          fileId: ID.unique(),
+          file: InputFile.fromPath(
+            path: file.path,
+            filename: fileName,
+          ),
+        );
 
-        final uploadTask = ref.putFile(file);
-
-        // Suivre la progression
-        uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
-          _uploadProgress =
-              (i + snapshot.bytesTransferred / snapshot.totalBytes) /
-                  _selectedImages.length;
-          notifyListeners();
-        });
-
-        await uploadTask;
-        final url = await ref.getDownloadURL();
+        // Construct URL
+        final url = '${AppwriteConfig.endpoint}/storage/buckets/${AppwriteConfig.bucketId}/files/${result.$id}/view?project=${AppwriteConfig.projectId}';
+        
         urls.add(url);
+        
+        // Update progress
+        _uploadProgress = (i + 1) / _selectedImages.length;
+        notifyListeners();
+        
       } catch (e) {
         debugPrint('Erreur upload image $i: $e');
       }
@@ -287,6 +294,7 @@ class AddEditListingProvider extends ChangeNotifier {
 
     return urls;
   }
+
 
   /// Créer une nouvelle annonce
   Future<void> createListing(String userId) async {
