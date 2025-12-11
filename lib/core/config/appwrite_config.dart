@@ -2,10 +2,7 @@
 class AppwriteConfig {
   AppwriteConfig._();
   static const String endpoint = 'https://cloud.appwrite.io/v1';
-  static const String projectId = 'YOUR_PROJECT_ID';
-  static const String databaseId = 'Ahoe_db';
+  static const String projectId = '68a3096a003719911bbf';
   // Buckets
-  static const String listingImagesBucket = 'listing_images';
-  static const String profileImagesBucket = 'profile_images';
-  static const int maxFileSize = 5 * 1024 * 1024; // 5MB
+  static const String bucketId = '6825ee3b003c09a6dd3d';
 }
