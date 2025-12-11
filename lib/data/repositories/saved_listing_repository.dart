@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/saved_listing_model.dart';
 import '../models/listing_model.dart';
+import '../../core/config/firebase_config.dart';
 
 /// Repository pour gérer les favoris
 class SavedListingRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final String _collectionName = 'saved_listings';
+  final String _collectionName = FirebaseConfig.savedListingsCollection;
 
   /// Récupérer tous les favoris d'un utilisateur
   Future<List<SavedListingModel>> getSavedListings(String userId) async {
@@ -114,7 +115,7 @@ class SavedListingRepository {
       for (int i = 0; i < listingIds.length; i += 10) {
         final batch = listingIds.skip(i).take(10).toList();
         final querySnapshot = await _firestore
-            .collection('listings')
+            .collection(FirebaseConfig.listingsCollection)
             .where(FieldPath.documentId, whereIn: batch)
             .get();
 

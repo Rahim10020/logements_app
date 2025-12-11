@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user_model.dart';
+import '../../core/config/firebase_config.dart';
 
 /// Repository pour gérer les opérations sur les utilisateurs
 class UserRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final String _collectionName = 'users';
+  final String _collectionName = FirebaseConfig.usersCollection;
 
   /// Récupérer un utilisateur par ID
   Future<UserModel?> getUserById(String userId) async {

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../data/models/user_model.dart';
+import '../../../core/config/firebase_config.dart';
 
 /// Provider pour gérer l'authentification des utilisateurs
 /// Gère la connexion, l'inscription, la réinitialisation du mot de passe
@@ -42,7 +43,7 @@ class AuthProvider extends ChangeNotifier {
   /// Charger les données utilisateur depuis Firestore
   Future<void> _loadUserData(String uid) async {
     try {
-      final doc = await _firestore.collection('users').doc(uid).get();
+      final doc = await _firestore.collection(FirebaseConfig.usersCollection).doc(uid).get();
       if (doc.exists) {
         _userModel = UserModel.fromJson({...doc.data()!, 'id': doc.id});
       }
@@ -118,7 +119,7 @@ class AuthProvider extends ChangeNotifier {
         );
 
         await _firestore
-            .collection('users')
+            .collection(FirebaseConfig.usersCollection)
             .doc(credential.user!.uid)
             .set(userDoc.toJson());
 
@@ -154,7 +155,7 @@ class AuthProvider extends ChangeNotifier {
       if (userCredential.user != null) {
         // Vérifier si l'utilisateur existe déjà dans Firestore
         final userDoc = await _firestore
-            .collection('users')
+            .collection(FirebaseConfig.usersCollection)
             .doc(userCredential.user!.uid)
             .get();
 
@@ -173,7 +174,7 @@ class AuthProvider extends ChangeNotifier {
           );
 
           await _firestore
-              .collection('users')
+              .collection(FirebaseConfig.usersCollection)
               .doc(userCredential.user!.uid)
               .set(newUser.toJson());
         }
@@ -231,7 +232,7 @@ class AuthProvider extends ChangeNotifier {
       _setLoading(true);
       _errorMessage = null;
 
-      await _firestore.collection('users').doc(_currentUser!.uid).update({
+      await _firestore.collection(FirebaseConfig.usersCollection).doc(_currentUser!.uid).update({
         'role': role,
       });
 

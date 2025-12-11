@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/listing_model.dart';
+import '../../core/config/firebase_config.dart';
 
 /// Repository pour gérer les opérations CRUD sur les annonces
 class ListingRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final String _collectionName = 'listings';
+  final String _collectionName = FirebaseConfig.listingsCollection;
 
   /// Récupérer toutes les annonces disponibles
   Future<List<ListingModel>> getAllListings() async {

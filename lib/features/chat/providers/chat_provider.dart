@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../data/models/message_model.dart';
+import '../../../core/config/firebase_config.dart';
 
 /// Provider pour gérer les conversations et messages
 class ChatProvider extends ChangeNotifier {
@@ -29,7 +30,7 @@ class ChatProvider extends ChangeNotifier {
     try {
       // Récupérer les conversations où l'utilisateur est participant
       final snapshot = await _firestore
-          .collection('conversations')
+          .collection(FirebaseConfig.conversationsCollection)
           .where('participants', arrayContains: userId)
           .orderBy('lastMessageAt', descending: true)
           .get();
@@ -70,7 +71,7 @@ class ChatProvider extends ChangeNotifier {
   /// Stream des conversations (temps réel)
   Stream<List<Map<String, dynamic>>> watchConversations(String userId) {
     return _firestore
-        .collection('conversations')
+        .collection(FirebaseConfig.conversationsCollection)
         .where('participants', arrayContains: userId)
         .orderBy('lastMessageAt', descending: true)
         .snapshots()
@@ -93,9 +94,9 @@ class ChatProvider extends ChangeNotifier {
   /// Récupérer les messages d'une conversation
   Stream<List<MessageModel>> watchMessages(String conversationId) {
     return _firestore
-        .collection('conversations')
+        .collection(FirebaseConfig.conversationsCollection)
         .doc(conversationId)
-        .collection('messages')
+        .collection(FirebaseConfig.messagesCollection)
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) {
@@ -124,13 +125,13 @@ class ChatProvider extends ChangeNotifier {
 
       // Ajouter le message
       await _firestore
-          .collection('conversations')
+          .collection(FirebaseConfig.conversationsCollection)
           .doc(conversationId)
-          .collection('messages')
+          .collection(FirebaseConfig.messagesCollection)
           .add(messageData);
 
       // Mettre à jour la conversation
-      await _firestore.collection('conversations').doc(conversationId).update({
+      await _firestore.collection(FirebaseConfig.conversationsCollection).doc(conversationId).update({
         'lastMessage': {
           ...messageData,
           'createdAt': DateTime.now(),
@@ -157,7 +158,7 @@ class ChatProvider extends ChangeNotifier {
     try {
       // Vérifier si une conversation existe déjà
       final existingConversation = await _firestore
-          .collection('conversations')
+          .collection(FirebaseConfig.conversationsCollection)
           .where('participants', arrayContains: userId)
           .where('listingId', isEqualTo: listingId)
           .get();
@@ -173,7 +174,7 @@ class ChatProvider extends ChangeNotifier {
       }
 
       // Créer nouvelle conversation
-      final newConv = await _firestore.collection('conversations').add({
+      final newConv = await _firestore.collection(FirebaseConfig.conversationsCollection).add({
         'participants': [userId, otherUserId],
         'listingId': listingId,
         'listingData': listingData,
@@ -198,9 +199,9 @@ class ChatProvider extends ChangeNotifier {
   Future<void> markMessagesAsRead(String conversationId, String userId) async {
     try {
       final messages = await _firestore
-          .collection('conversations')
+          .collection(FirebaseConfig.conversationsCollection)
           .doc(conversationId)
-          .collection('messages')
+          .collection(FirebaseConfig.messagesCollection)
           .where('receiverId', isEqualTo: userId)
           .where('isRead', isEqualTo: false)
           .get();
@@ -214,7 +215,7 @@ class ChatProvider extends ChangeNotifier {
 
       // Mettre à jour le lastMessage si c'était non lu
       final conv = await _firestore
-          .collection('conversations')
+          .collection(FirebaseConfig.conversationsCollection)
           .doc(conversationId)
           .get();
 
@@ -223,7 +224,7 @@ class ChatProvider extends ChangeNotifier {
         final lastMsg = data['lastMessage'] as Map<String, dynamic>?;
         if (lastMsg != null && lastMsg['receiverId'] == userId) {
           await _firestore
-              .collection('conversations')
+              .collection(FirebaseConfig.conversationsCollection)
               .doc(conversationId)
               .update({
             'lastMessage.isRead': true,
@@ -242,9 +243,9 @@ class ChatProvider extends ChangeNotifier {
     try {
       // Supprimer les messages
       final messages = await _firestore
-          .collection('conversations')
+          .collection(FirebaseConfig.conversationsCollection)
           .doc(conversationId)
-          .collection('messages')
+          .collection(FirebaseConfig.messagesCollection)
           .get();
 
       final batch = _firestore.batch();
@@ -254,7 +255,7 @@ class ChatProvider extends ChangeNotifier {
 
       // Supprimer la conversation
       batch.delete(
-        _firestore.collection('conversations').doc(conversationId),
+        _firestore.collection(FirebaseConfig.conversationsCollection).doc(conversationId),
       );
 
       await batch.commit();
