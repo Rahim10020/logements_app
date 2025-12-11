@@ -1,5 +1,2 @@
-- Aller sur la console de firebase 
-    et appwrite et verifier que tout correspond bien a ce que j'ai dans mon code.
-    (modeles, verifier les regles, faire un meet avec crepin)
+
 - appwrite stocke les ids des images des appartements.
-- apres voir si le fichier firebase_config est necessaire puisque j'ai deja lie le projet a firebase.
