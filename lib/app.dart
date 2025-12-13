@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:logements_app/core/config/app_router.dart';
@@ -51,6 +52,11 @@ class App extends ConsumerWidget {
         locale: const Locale('fr', 'FR'),
         supportedLocales: const [
           Locale('fr', 'FR'),
+        ],
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
         ],
       ),
     );
