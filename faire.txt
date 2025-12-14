@@ -1,2 +1,7 @@
 
-- appwrite stocke les ids des images des appartements.
+- une fois arrive sur dans l'application, l'utilisateur peut voir les appartements disponibles.
+mais avant de contacter le proprietaire, il doit s'inscrire ou se connecter.
+apres s'etre connecte, il peut avoir acces aux chats avec les proprietaires,
+avoir acces au dashboard (dans le cas ou il a choisit qu'il veut publier
+lui aussi des annonces) et ajouter des appartements a ses favoris. et aussi il pourra
+alors avoir acces a son profil pour modifier ses informations.

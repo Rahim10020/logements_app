@@ -1,0 +1,52 @@
+%% Mermaid — Diagramme du parcours utilisateur (haute-niveau)
+%% Utilisez un plugin Mermaid (ex: mermaid preview) ou `mmdc` pour rendre ce fichier en PNG
+%%{init: { 'theme': 'base', 'themeVariables': { 'primaryColor': '#9f9', 'edgeLabelBackground':'#fff' }}}%%
+flowchart LR
+  %% Points d'entrée / zones principales
+  Start([Entrée App]) --> Home[/home\nHomeScreen\nHomeProvider/]
+  Home --> Search[/search\nSearchScreen/]
+  Home --> Listing[/listing/:id\nListingDetail/]
+  Home --- Saved[/saved\nSavedListings/]
+  Home --- Profile[/profile\nProfile/]
+  Home --- Conversations[/conversations\nConversations/]
+
+  %% Auth flows
+  Login[/auth/login\nLoginScreen/] --> PostLogin{user.role set?}
+  Register[/auth/register\nRegisterScreen/] --> PostLogin
+  ForgotPwd[/auth/forgot-password\nForgotPassword/] --> Login
+  PostLogin -- yes --> Home
+  PostLogin -- no --> RoleSel[/auth/role-selection\nRoleSelection/]
+  RoleSel --> Home
+
+  %% Access control (indication fluide)
+  Saved -. "si non connecté" .-> Login
+  Profile -. "si non connecté" .-> Login
+  Conversations -. "si non connecté" .-> Login
+  Dashboard[/dashboard\nDashboardScreen/] -. "si non connecté" .-> Login
+
+  %% Listing interactions
+  Listing -- "Favori (SavedProvider)" --> Saved
+  Listing -- "Contacter (ChatProvider)" --> Conversations
+  Listing -- "Voir Profil Proprio" --> Profile
+
+  %% Dashboard create/edit
+  Dashboard --> AddListing[/dashboard/add-listing\nAdd/Edit Listing/]
+  Dashboard --> EditListing[/dashboard/edit-listing/:id/]
+
+  %% Stylistique / classes
+  classDef auth fill:#f9f,stroke:#333,stroke-width:1px;
+  classDef role fill:#ff9,stroke:#333,stroke-width:1px;
+  classDef home fill:#9f9,stroke:#333,stroke-width:1px;
+  classDef listing fill:#9cf,stroke:#333,stroke-width:1px;
+  classDef dash fill:#f99,stroke:#333,stroke-width:1px;
+
+  class Login,ForgotPwd auth;
+  class RoleSel role;
+  class Home,Search,Saved,Profile,Conversations home;
+  class Listing listing;
+  class Dashboard,AddListing,EditListing dash;
+
+  %% Notes
+  subgraph Notes [Remarques]
+    note1["- Plusieurs écrans vérifient AuthProvider.currentUser et redirigent vers /auth/login. - Après connexion: si user.role vide -> /role-selection. - push garde l'historique, go fait une navigation non historique dans le code existant."]
+  end
