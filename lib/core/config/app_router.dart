@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../features/auth/screens/login_screen.dart';
 import '../../features/auth/screens/register_screen.dart';
 import '../../features/auth/screens/forgot_password_screen.dart';
@@ -13,6 +14,10 @@ import '../../features/profile/screens/profile_screen.dart';
 import '../../features/profile/screens/settings_screen.dart';
 import '../../features/chat/screens/conversations_screen.dart';
 import '../../features/chat/screens/chat_screen.dart';
+import '../../features/listing_detail/screens/listing_detail_screen.dart';
+import '../../features/profile/screens/edit_profile_screen.dart';
+import '../../features/auth/providers/auth_provider.dart';
+import '../widgets/bottom_nav_shell.dart';
 
 /// Configuration du routing avec GoRouter
 class AppRouter {
@@ -21,8 +26,46 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: '/home',
     debugLogDiagnostics: true,
+
+    // Redirect global pour protéger certaines routes et forcer la sélection de rôle
+    redirect: (BuildContext context, GoRouterState state) {
+      try {
+        final auth = Provider.of<AuthProvider>(context, listen: false);
+        final isLoggedIn = auth.currentUser != null;
+        final userRole = auth.userModel?.role ?? '';
+        final loc = state.uri.toString();
+
+        // Routes qui nécessitent l'authentification
+        final protectedPrefixes = [
+          '/saved',
+          '/conversations',
+          '/profile',
+          '/dashboard',
+          '/chat',
+        ];
+
+        final isProtected = protectedPrefixes.any((p) => loc.startsWith(p));
+
+        // Si utilisateur non connecté et route protégée -> redirection vers login
+        if (!isLoggedIn && isProtected) {
+          return '/auth/login?from=${Uri.encodeComponent(loc)}';
+        }
+
+        // Après connexion, si role non défini et on n'est pas déjà sur le flow d'auth -> forcer role-selection
+        final isOnAuthFlow = loc.startsWith('/auth') || loc.startsWith('/role-selection') || loc.startsWith('/auth/role-selection') || loc.startsWith('/auth/login') || loc.startsWith('/auth/register');
+        if (isLoggedIn && (userRole.isEmpty) && !isOnAuthFlow) {
+          return '/auth/role-selection';
+        }
+
+        return null;
+      } catch (e) {
+        // Si Provider non disponible (ex: au tout début de l'app), ne pas rediriger
+        return null;
+      }
+    },
+
     routes: [
-      // Routes d'authentification
+      // Routes d'authentification (gardées en top-level)
       GoRoute(
         path: '/auth/login',
         name: 'auth-login',
@@ -55,30 +98,44 @@ class AppRouter {
         name: 'auth-role-selection',
         builder: (context, state) => const RoleSelectionScreen(),
       ),
-      GoRoute(
-        path: '/role-selection',
-        redirect: (context, state) => '/auth/role-selection',
+
+      // ShellRoute qui contient la BottomNavigationBar pour les onglets principaux
+      ShellRoute(
+        builder: (context, state, child) => BottomNavShell(child: child),
+        routes: [
+          GoRoute(
+            path: '/',
+            redirect: (context, state) => '/home',
+          ),
+          GoRoute(
+            path: '/home',
+            name: 'home',
+            builder: (context, state) => const HomeScreen(),
+          ),
+          GoRoute(
+            path: '/search',
+            name: 'search',
+            builder: (context, state) => const SearchScreen(),
+          ),
+          GoRoute(
+            path: '/saved',
+            name: 'saved',
+            builder: (context, state) => const SavedListingsScreen(),
+          ),
+          GoRoute(
+            path: '/conversations',
+            name: 'conversations',
+            builder: (context, state) => const ConversationsScreen(),
+          ),
+          GoRoute(
+            path: '/profile',
+            name: 'profile',
+            builder: (context, state) => const ProfileScreen(),
+          ),
+        ],
       ),
 
-      // Routes principales
-      GoRoute(
-        path: '/',
-        redirect: (context, state) => '/home',
-      ),
-      GoRoute(
-        path: '/home',
-        name: 'home',
-        builder: (context, state) => const HomeScreen(),
-      ),
-
-      // Route des favoris
-      GoRoute(
-        path: '/saved',
-        name: 'saved',
-        builder: (context, state) => const SavedListingsScreen(),
-      ),
-
-      // Routes de détail
+      // Routes non-onglets / détails (restent en top-level pour être ouvertes sans la bottom bar si souhaité)
       GoRoute(
         path: '/listing/:id',
         name: 'listing-detail',
@@ -88,14 +145,7 @@ class AppRouter {
         },
       ),
 
-      // Route de recherche (à implémenter)
-      GoRoute(
-        path: '/search',
-        name: 'search',
-        builder: (context, state) => const SearchScreen(),
-      ),
-
-      // Routes dashboard
+      // Routes dashboard (protégées par le redirect global)
       GoRoute(
         path: '/dashboard',
         name: 'dashboard',
@@ -115,12 +165,7 @@ class AppRouter {
         },
       ),
 
-      // Routes profil
-      GoRoute(
-        path: '/profile',
-        name: 'profile',
-        builder: (context, state) => const ProfileScreen(),
-      ),
+      // Profile edit/settings
       GoRoute(
         path: '/profile/edit',
         name: 'edit-profile',
@@ -132,12 +177,7 @@ class AppRouter {
         builder: (context, state) => const SettingsScreen(),
       ),
 
-      // Routes chat
-      GoRoute(
-        path: '/conversations',
-        name: 'conversations',
-        builder: (context, state) => const ConversationsScreen(),
-      ),
+      // Chat
       GoRoute(
         path: '/chat/:id',
         name: 'chat',
@@ -171,68 +211,3 @@ class AppRouter {
   );
 }
 
-// Placeholder screens - Seront implémentés dans les phases suivantes
-
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Ahoe')),
-      body: const Center(child: Text('Main Screen with Bottom Nav - Phase 3')),
-    );
-  }
-}
-
-class ListingDetailScreen extends StatelessWidget {
-  final String listingId;
-
-  const ListingDetailScreen({super.key, required this.listingId});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Détails de l\'annonce')),
-      body: Center(child: Text('Listing Detail $listingId - Phase 3')),
-    );
-  }
-}
-
-class AddListingScreen extends StatelessWidget {
-  const AddListingScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Ajouter une annonce')),
-      body: const Center(child: Text('Add Listing Screen - Phase 6')),
-    );
-  }
-}
-
-class EditListingScreen extends StatelessWidget {
-  final String listingId;
-
-  const EditListingScreen({super.key, required this.listingId});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Modifier l\'annonce')),
-      body: Center(child: Text('Edit Listing $listingId - Phase 6')),
-    );
-  }
-}
-
-class EditProfileScreen extends StatelessWidget {
-  const EditProfileScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Modifier le profil')),
-      body: const Center(child: Text('Edit Profile Screen - Phase 7')),
-    );
-  }
-}
