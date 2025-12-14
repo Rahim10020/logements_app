@@ -5,3 +5,8 @@ apres s'etre connecte, il peut avoir acces aux chats avec les proprietaires,
 avoir acces au dashboard (dans le cas ou il a choisit qu'il veut publier
 lui aussi des annonces) et ajouter des appartements a ses favoris. et aussi il pourra
 alors avoir acces a son profil pour modifier ses informations.
+
+ERREUR A CORRIGER:
+    Erreur lors du chargement des IDs favoris: Exception: Erreur lors de la récupération des
+    favoris: [cloud_firestore/failed-precondition] The query requires an index. You can create it here:
+    https://console.firebase.google.com/v1/r/project/land-tg/firestore/indexes?create_composite=CkVwcm9qZWN0cy9sYW5kLXRnL2RhdGFiYXNlcy8oZGVmYXVsdCkvY29sbGVjdGlvbkdyb3Vwcy9zYXZlZC9pbmRleGVzL18QARoKCgZ1c2VySWQQARoLCgdzYXZlZEF0EAIaDAoIX19uYW1lX18QAg
