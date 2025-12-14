@@ -414,7 +414,7 @@ ${listing.description.isNotEmpty ? listing.description : ''}
 
 Via Ahoe
 ''';
-    SharePlus.instance.share(text, subject: 'Annonce Ahoe');
+    SharePlus.instance.share(ShareParams(text: text, subject: 'Annonce Ahoe'));
   }
 
   /// Toggle favori
