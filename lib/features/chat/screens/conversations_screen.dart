@@ -37,10 +37,8 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
 
+    // Si non connecté, on affiche un loader (le redirect global gère la redirection vers /auth/login)
     if (authProvider.currentUser == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.go('/auth/login');
-      });
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
@@ -159,171 +157,31 @@ class _ConversationsScreenState extends State<ConversationsScreen> {
               right: 0,
               top: 0,
               child: Container(
-                width: 12,
-                height: 12,
+                width: 14,
+                height: 14,
                 decoration: BoxDecoration(
-                  color: AppColors.primary,
+                  color: AppColors.accent,
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 2),
                 ),
               ),
             ),
         ],
       ),
-      title: Row(
-        children: [
-          Expanded(
-            child: Text(
-              otherUserData?['displayName'] ?? 'Utilisateur',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: isUnread ? FontWeight.bold : FontWeight.w600,
-                color: AppColors.textDark,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          if (lastMessage != null)
-            Text(
-              _formatTime(lastMessage['createdAt']),
-              style: TextStyle(
-                fontSize: 12,
-                color: isUnread ? AppColors.primary : Colors.grey[600],
-                fontWeight: isUnread ? FontWeight.w600 : FontWeight.normal,
-              ),
-            ),
-        ],
+      title: Text(
+        otherUserData?['displayName'] ?? 'Utilisateur',
+        style: const TextStyle(fontWeight: FontWeight.w600),
       ),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (listingData != null) ...[
-            const SizedBox(height: 4),
-            Text(
-              listingData['propertyType'] ?? '',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey[600],
-              ),
-            ),
-          ],
-          if (lastMessage != null) ...[
-            const SizedBox(height: 4),
-            Text(
-              lastMessage['message'] ?? '',
-              style: TextStyle(
-                fontSize: 14,
-                color: isUnread ? AppColors.textDark : Colors.grey[700],
-                fontWeight: isUnread ? FontWeight.w500 : FontWeight.normal,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ],
+      subtitle: Text(
+        lastMessage != null ? (lastMessage['text'] ?? '') : 'Nouvelle conversation',
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
-      trailing: PopupMenuButton<String>(
-        icon: Icon(Icons.more_vert, color: Colors.grey[600]),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        onSelected: (value) {
-          if (value == 'delete') {
-            _showDeleteDialog(conversation['id']);
-          }
-        },
-        itemBuilder: (context) => [
-          const PopupMenuItem(
-            value: 'delete',
-            child: Row(
-              children: [
-                Icon(Icons.delete_outline, color: Colors.red),
-                SizedBox(width: 12),
-                Text('Supprimer', style: TextStyle(color: Colors.red)),
-              ],
-            ),
-          ),
-        ],
+      trailing: Text(
+        lastMessage != null && lastMessage['createdAt'] != null
+            ? DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(lastMessage['createdAt']))
+            : '',
+        style: TextStyle(color: Colors.grey[600], fontSize: 12),
       ),
     );
-  }
-
-  /// Formater l'heure
-  String _formatTime(dynamic timestamp) {
-    if (timestamp == null) return '';
-    
-    DateTime date;
-    if (timestamp is DateTime) {
-      date = timestamp;
-    } else {
-      return '';
-    }
-
-    final now = DateTime.now();
-    final difference = now.difference(date);
-
-    if (difference.inDays == 0) {
-      return DateFormat('HH:mm').format(date);
-    } else if (difference.inDays == 1) {
-      return 'Hier';
-    } else if (difference.inDays < 7) {
-      return DateFormat('EEEE', 'fr_FR').format(date);
-    } else {
-      return DateFormat('dd/MM/yy').format(date);
-    }
-  }
-
-  /// Dialog de confirmation de suppression
-  Future<void> _showDeleteDialog(String conversationId) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        title: const Text('Supprimer la conversation ?'),
-        content: const Text(
-          'Cette action est irréversible. Tous les messages seront supprimés.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Annuler'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.red,
-            ),
-            child: const Text('Supprimer'),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed == true && mounted) {
-      try {
-        await context.read<ChatProvider>().deleteConversation(conversationId);
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Conversation supprimée'),
-              backgroundColor: AppColors.success,
-            ),
-          );
-        }
-      } catch (e) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Erreur lors de la suppression'),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      }
-    }
   }
 }
-

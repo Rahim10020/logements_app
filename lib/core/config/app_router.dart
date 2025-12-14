@@ -16,6 +16,7 @@ import '../../features/chat/screens/conversations_screen.dart';
 import '../../features/chat/screens/chat_screen.dart';
 import '../../features/listing_detail/screens/listing_detail_screen.dart';
 import '../../features/profile/screens/edit_profile_screen.dart';
+import '../../features/common/screens/access_denied_screen.dart';
 import '../../features/auth/providers/auth_provider.dart';
 import '../widgets/bottom_nav_shell.dart';
 
@@ -49,6 +50,11 @@ class AppRouter {
         // Si utilisateur non connecté et route protégée -> redirection vers login
         if (!isLoggedIn && isProtected) {
           return '/auth/login?from=${Uri.encodeComponent(loc)}';
+        }
+
+        // Si connecté mais non propriétaire et tente d'accéder au dashboard -> accès refusé
+        if (isLoggedIn && userRole != 'owner' && loc.startsWith('/dashboard')) {
+          return '/access-denied';
         }
 
         // Après connexion, si role non défini et on n'est pas déjà sur le flow d'auth -> forcer role-selection
@@ -97,6 +103,12 @@ class AppRouter {
         path: '/auth/role-selection',
         name: 'auth-role-selection',
         builder: (context, state) => const RoleSelectionScreen(),
+      ),
+      // Route accès refusé
+      GoRoute(
+        path: '/access-denied',
+        name: 'access-denied',
+        builder: (context, state) => const AccessDeniedScreen(),
       ),
 
       // ShellRoute qui contient la BottomNavigationBar pour les onglets principaux

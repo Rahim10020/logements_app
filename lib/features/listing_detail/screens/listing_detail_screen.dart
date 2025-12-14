@@ -414,7 +414,7 @@ ${listing.description.isNotEmpty ? listing.description : ''}
 
 Via Ahoe
 ''';
-    Share.share(text, subject: 'Annonce Ahoe');
+    SharePlus.instance.share(text, subject: 'Annonce Ahoe');
   }
 
   /// Toggle favori
@@ -423,7 +423,14 @@ Via Ahoe
     final savedProvider = context.read<SavedProvider>();
 
     if (authProvider.currentUser == null) {
-      context.push('/auth/login');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Connectez-vous pour ajouter aux favoris'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
       return;
     }
 

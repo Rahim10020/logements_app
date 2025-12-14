@@ -35,11 +35,8 @@ class _SavedListingsScreenState extends State<SavedListingsScreen> {
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
 
-    // Si pas connecté, rediriger vers login
+    // Si pas connecté, on affiche un loader (le redirect global du router gère la redirection vers le login)
     if (authProvider.currentUser == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.go('/auth/login');
-      });
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );

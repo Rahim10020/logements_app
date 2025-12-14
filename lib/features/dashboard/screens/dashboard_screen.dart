@@ -37,13 +37,55 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
 
-    // Rediriger si pas connecté
+    // Si pas connecté, on affiche un loader (le redirect global gère la redirection vers le login)
     if (authProvider.currentUser == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.go('/auth/login');
-      });
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    // Si connecté mais pas propriétaire -> afficher écran d'accès refusé
+    if (authProvider.userModel?.role != 'owner') {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: const Text(
+            'Accès refusé',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: AppColors.textDark,
+            ),
+          ),
+        ),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.block, size: 64, color: Colors.red),
+                const SizedBox(height: 16),
+                const Text(
+                  'Vous n\'avez pas l\'accès à cette section',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Le Dashboard est réservé aux propriétaires. Vous pouvez demander le statut propriétaire depuis votre profil.',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () => context.push('/profile'),
+                  child: const Text('Aller au profil'),
+                ),
+              ],
+            ),
+          ),
+        ),
       );
     }
 

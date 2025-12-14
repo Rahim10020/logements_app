@@ -303,7 +303,14 @@ class _SearchScreenState extends State<SearchScreen> {
     final savedProvider = context.read<SavedProvider>();
 
     if (authProvider.currentUser == null) {
-      context.push('/auth/login');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Connectez-vous pour ajouter aux favoris'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
       return;
     }
 

@@ -236,9 +236,13 @@ class _HomeScreenState extends State<HomeScreen> {
     final savedProvider = context.read<SavedProvider>();
 
     if (authProvider.currentUser == null) {
-      // Rediriger vers login
       if (mounted) {
-        context.push('/auth/login');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Connectez-vous pour ajouter aux favoris'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
       return;
     }

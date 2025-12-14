@@ -675,7 +675,15 @@ class _AddEditListingScreenState extends State<AddEditListingScreen> {
     final provider = context.read<AddEditListingProvider>();
 
     if (authProvider.currentUser == null) {
-      context.go('/auth/login');
+      // Laisser le router global gérer la redirection vers le login; informer l'utilisateur en attendant
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Vous devez être connecté pour publier une annonce'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
       return;
     }
 

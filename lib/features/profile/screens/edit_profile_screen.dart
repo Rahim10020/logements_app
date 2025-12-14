@@ -53,10 +53,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
 
+    // Si non connecté, afficher un loader (le redirect global gère la redirection vers /auth/login)
     if (authProvider.currentUser == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.go('/auth/login');
-      });
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );

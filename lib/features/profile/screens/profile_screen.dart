@@ -37,11 +37,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
 
-    // Rediriger si pas connecté
+    // Si pas connecté, afficher un loader (le redirect global gère la redirection vers le login)
     if (authProvider.currentUser == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.go('/auth/login');
-      });
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
@@ -121,111 +118,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
+
                 const SizedBox(height: 24),
 
-                // Préférences
-                Container(
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      ProfileMenuItem(
-                        icon: Icons.notifications_outlined,
-                        title: 'Notifications',
-                        subtitle: 'Gérer les notifications',
-                        onTap: () => _showComingSoon('Notifications'),
-                      ),
-                      ProfileMenuItem(
-                        icon: Icons.language_outlined,
-                        title: 'Langue',
-                        subtitle: 'Français',
-                        onTap: () => _showComingSoon('Choix de langue'),
-                      ),
-                      ProfileMenuItem(
-                        icon: Icons.dark_mode_outlined,
-                        title: 'Thème',
-                        subtitle: 'Clair',
-                        onTap: () => _showComingSoon('Thème sombre'),
-                        showDivider: false,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 24),
-
-                // Support
-                Container(
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      ProfileMenuItem(
-                        icon: Icons.help_outline,
-                        title: 'Aide & Support',
-                        onTap: () => _showComingSoon('Support'),
-                        iconColor: AppColors.info,
-                      ),
-                      ProfileMenuItem(
-                        icon: Icons.privacy_tip_outlined,
-                        title: 'Confidentialité',
-                        onTap: () =>
-                            _showComingSoon('Politique de confidentialité'),
-                        iconColor: AppColors.info,
-                      ),
-                      ProfileMenuItem(
-                        icon: Icons.description_outlined,
-                        title: 'Conditions d\'utilisation',
-                        onTap: () => _showComingSoon('CGU'),
-                        iconColor: AppColors.info,
-                        showDivider: false,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 24),
-
-                // Déconnexion et suppression
+                // Actions
                 Container(
                   color: Colors.white,
                   child: Column(
                     children: [
                       ProfileMenuItem(
                         icon: Icons.logout,
-                        title: 'Déconnexion',
-                        onTap: _showLogoutDialog,
-                        iconColor: AppColors.accent,
-                        showDivider: false,
+                        title: 'Se déconnecter',
+                        subtitle: 'Quitter la session',
+                        onTap: () => _confirmSignOut(),
+                      ),
+                      ProfileMenuItem(
+                        icon: Icons.delete_outline,
+                        title: 'Supprimer le compte',
+                        subtitle: 'Supprimer définitivement',
+                        onTap: () => _showDeleteAccountDialog(),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
-
-                // Bouton suppression compte
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: TextButton(
-                    onPressed: _showDeleteAccountDialog,
-                    child: const Text(
-                      'Supprimer mon compte',
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 40),
-
-                // Version
-                Center(
-                  child: Text(
-                    'Ahoe v0.6.0',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[500],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 40),
               ],
             ),
           );
@@ -400,29 +315,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  /// Afficher message "Bientôt disponible"
-  void _showComingSoon(String feature) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        title: const Text('Bientôt disponible'),
-        content:
-            Text('La fonctionnalité "$feature" sera disponible prochainement.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
-
   /// Dialog de déconnexion
-  Future<void> _showLogoutDialog() async {
+  Future<void> _confirmSignOut() async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -430,7 +324,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          title: const Text('Déconnexion'),
+          title: const Text('Se déconnecter'),
           content: const Text('Voulez-vous vraiment vous déconnecter ?'),
           actions: [
             TextButton(
